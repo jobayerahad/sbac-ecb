@@ -1,0 +1,26 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: local('Open Sans'), url(/fonts/OpenSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: local('Roboto Slab'), url(/fonts/RobotoSlab-Regular.ttf) format('truetype');
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 1rem 1.5rem;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #ad5389, #3c1053);
+}

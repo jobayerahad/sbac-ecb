@@ -1,0 +1,142 @@
+import { useMemo } from 'react'
+import { useTable, useSortBy, useGlobalFilter, useFilters, usePagination, useFlexLayout } from 'react-table'
+
+import { COLUMNS } from '@utils/columns'
+import GlobalFilter from './Filter/Global'
+import ColumnFilter from './Filter/Column'
+
+const Table = ({ employees }) => {
+  const columns = useMemo(() => COLUMNS, [])
+  const data = useMemo(() => employees, [employees])
+  const defaultColumn = useMemo(
+    () => ({
+      Filter: ColumnFilter
+    }),
+    []
+  )
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page,
+    previousPage,
+    nextPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    prepareRow,
+    gotoPage,
+    pageCount,
+    setPageSize,
+    state: { pageSize, pageIndex, globalFilter },
+    setGlobalFilter
+  } = useTable(
+    { columns, data, defaultColumn, initialState: { pageSize: 20 } },
+    useFlexLayout,
+    useFilters,
+    useGlobalFilter,
+    useSortBy,
+    usePagination
+  )
+
+  return (
+    <>
+      <div className="flex-spaced">
+        <select className="select-dropdown" value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+
+        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+      </div>
+
+      <table className="table" {...getTableProps()}>
+        <thead>
+          {headerGroups.map(({ getHeaderGroupProps, headers }, index) => (
+            <tr {...getHeaderGroupProps()} key={index}>
+              {headers.map(
+                (
+                  {
+                    getHeaderProps,
+                    render: colRender,
+                    getSortByToggleProps,
+                    toggleSortBy,
+                    isSorted,
+                    isSortedDesc,
+                    canFilter
+                  },
+                  index
+                ) => (
+                  <th
+                    {...getHeaderProps(getSortByToggleProps())}
+                    onClick={() => toggleSortBy(!isSortedDesc)}
+                    key={index}
+                  >
+                    {colRender('Header')}
+                    <span>{isSorted ? (isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                    <div>{canFilter ? colRender('Filter') : null}</div>
+                  </th>
+                )
+              )}
+            </tr>
+          ))}
+        </thead>
+
+        <tbody {...getTableBodyProps()}>
+          {page.map((row, index) => {
+            prepareRow(row)
+
+            return (
+              <tr {...row.getRowProps()} key={index}>
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()} key={cell.column.id}>
+                    {cell.render('Cell')}
+                  </td>
+                ))}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+
+      <p className="page-info">
+        Page <span>{pageIndex + 1}</span> of <span>{pageOptions.length}</span>
+        {' | Go To: '}
+        <input
+          type="number"
+          defaultValue={pageIndex + 1}
+          min="1"
+          max={pageOptions.length}
+          onChange={(e) => {
+            const pageNumber = Number(e.target.value) - 1 || 0
+            gotoPage(pageNumber)
+          }}
+        />
+      </p>
+
+      <div className="pagination">
+        <button className="pagination__btn" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {'<<'}
+        </button>
+
+        <button className="pagination__btn" onClick={previousPage} disabled={!canPreviousPage}>
+          Previous
+        </button>
+
+        <button className="pagination__btn" onClick={nextPage} disabled={!canNextPage}>
+          Next
+        </button>
+
+        <button className="pagination__btn" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {'>>'}
+        </button>
+      </div>
+    </>
+  )
+}
+
+export default Table
