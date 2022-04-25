@@ -21,7 +21,7 @@ const GlobalFilter = ({ filter, setFilter }) => {
         setValue(e.target.value)
         onChange(e.target.value)
       }}
-      placeholder="Search in all columns..."
+      placeholder="Search..."
     />
   )
 }

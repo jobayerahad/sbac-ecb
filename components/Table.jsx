@@ -1,19 +1,12 @@
 import { useMemo } from 'react'
-import { useTable, useSortBy, useGlobalFilter, useFilters, usePagination, useFlexLayout } from 'react-table'
+import { useTable, useSortBy, useGlobalFilter, usePagination, useFlexLayout } from 'react-table'
 
 import { COLUMNS } from '@utils/columns'
 import GlobalFilter from './Filter/Global'
-import ColumnFilter from './Filter/Column'
 
 const Table = ({ employees }) => {
   const columns = useMemo(() => COLUMNS, [])
   const data = useMemo(() => employees, [employees])
-  const defaultColumn = useMemo(
-    () => ({
-      Filter: ColumnFilter
-    }),
-    []
-  )
 
   const {
     getTableProps,
@@ -32,9 +25,8 @@ const Table = ({ employees }) => {
     state: { pageSize, pageIndex, globalFilter },
     setGlobalFilter
   } = useTable(
-    { columns, data, defaultColumn, initialState: { pageSize: 20 } },
+    { columns, data, initialState: { pageSize: 20 } },
     useFlexLayout,
-    useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination
@@ -60,15 +52,7 @@ const Table = ({ employees }) => {
             <tr {...getHeaderGroupProps()} key={index}>
               {headers.map(
                 (
-                  {
-                    getHeaderProps,
-                    render: colRender,
-                    getSortByToggleProps,
-                    toggleSortBy,
-                    isSorted,
-                    isSortedDesc,
-                    canFilter
-                  },
+                  { getHeaderProps, render: colRender, getSortByToggleProps, toggleSortBy, isSorted, isSortedDesc },
                   index
                 ) => (
                   <th
@@ -78,7 +62,6 @@ const Table = ({ employees }) => {
                   >
                     {colRender('Header')}
                     <span>{isSorted ? (isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                    <div>{canFilter ? colRender('Filter') : null}</div>
                   </th>
                 )
               )}

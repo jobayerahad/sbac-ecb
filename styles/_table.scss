@@ -23,6 +23,10 @@
     background-color: #2c3e50;
     color: #f5f5f5;
 
+    & * {
+      user-select: none;
+    }
+
     ::selection {
       background-color: #fff;
       color: #2c3e50;
@@ -35,6 +39,19 @@
     overflow-x: hidden;
     overflow-y: auto;
     color: #353b48;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+     
+    &::-webkit-scrollbar-track {
+      background-color: #fff;
+    }
+     
+    &::-webkit-scrollbar-thumb {
+      border-radius: 1rem;
+      background-color: rgba(53, 59, 72, 0.75);
+    }
 
     ::selection {
       background-color: #353b48;

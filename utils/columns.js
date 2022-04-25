@@ -2,7 +2,7 @@ export const COLUMNS = [
   {
     Header: 'Employee ID',
     accessor: 'emp_id',
-    width: 70
+    width: 85
   },
   {
     Header: 'Employee name',
@@ -12,7 +12,7 @@ export const COLUMNS = [
   {
     Header: 'Designation',
     accessor: 'designation',
-    width: 120
+    width: 80
   },
   {
     Header: 'Department',
@@ -22,29 +22,26 @@ export const COLUMNS = [
   {
     Header: 'Brance Code',
     accessor: 'branch_code',
-    width: 70
+    width: 85
   },
   {
     Header: 'Branch/Division',
-    accessor: 'branch',
+    accessor: 'branch_div',
     width: 100
   },
   {
     Header: 'Cell Number',
     accessor: 'cell_phone',
-    disableFilters: true,
     width: 100
   },
   {
     Header: 'Phone',
     accessor: 'phone',
-    disableFilters: true,
-    width: 100
+    width: 120
   },
   {
     Header: 'Email',
     accessor: 'email',
-    disableFilters: true,
     width: 180
   }
 ]
