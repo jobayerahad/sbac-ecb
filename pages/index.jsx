@@ -16,6 +16,8 @@ const Home = () => {
       <h1 className="heading">SBAC Contact Information</h1>
 
       <Table employees={data} />
+
+      <img src="/images/logo-full.png" alt="SBAC Logo" className='logo' />
     </>
   )
 }

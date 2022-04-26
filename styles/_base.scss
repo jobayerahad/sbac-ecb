@@ -16,11 +16,32 @@
   src: local('Roboto Slab'), url(/fonts/RobotoSlab-Regular.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Tangerine';
+  src: local('Tangerine'), url(/fonts/Tangerine-Bold.ttf) format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Berkshire Swash';
+  src: local('Berkshire Swash'), url(/fonts/BerkshireSwash-Regular.ttf) format('truetype');
+  font-weight: bold;
+}
+
 body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   padding: 1rem 1.5rem;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #ad5389, #3c1053);
+  background: url('/images/background.webp') no-repeat center center fixed;
+  background-size: cover;
+  backdrop-filter: blur(1px);
+}
+
+.logo {
+  position: fixed;
+  bottom: 1rem;
+  right: 2rem;
+  width: 4rem;
 }

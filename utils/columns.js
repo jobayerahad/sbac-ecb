@@ -20,14 +20,11 @@ export const COLUMNS = [
     width: 100
   },
   {
-    Header: 'Brance Code',
-    accessor: 'branch_code',
-    width: 85
-  },
-  {
     Header: 'Branch/Division',
-    accessor: 'branch_div',
-    width: 100
+    accessor: ({ branch_div, branch_code }) => (
+      <>{branch_div} ({branch_code})</>
+    ),
+    width: 110
   },
   {
     Header: 'Cell Number',
