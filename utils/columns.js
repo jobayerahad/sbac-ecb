@@ -21,9 +21,7 @@ export const COLUMNS = [
   },
   {
     Header: 'Branch/Division',
-    accessor: ({ branch_div, branch_code }) => (
-      <>{branch_div} ({branch_code})</>
-    ),
+    accessor: 'branch_div',
     width: 110
   },
   {

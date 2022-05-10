@@ -3,10 +3,7 @@ import Table from '@components/Table'
 import { useQuery } from 'react-query'
 
 const Home = () => {
-  const { isLoading, error, data } = useQuery(
-    'employeeData',
-    async () => (await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/employees`)).data
-  )
+  const { isLoading, error, data } = useQuery('employeeData', async () => (await axios.get('/api/employees')).data)
 
   if (isLoading) return 'Loading...'
   if (error) return 'An error has occurred: ' + error.message
@@ -17,7 +14,7 @@ const Home = () => {
 
       <Table employees={data} />
 
-      <img src="/images/logo-full.png" alt="SBAC Logo" className='logo' />
+      <img src="/images/logo-full.png" alt="SBAC Logo" className="logo" />
     </>
   )
 }
