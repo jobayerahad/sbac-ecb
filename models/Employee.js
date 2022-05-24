@@ -25,14 +25,20 @@ const EmployeeSchema = new mongoose.Schema({
     type: String
   },
   branch_code: {
+    type: Number
+  },
+  branch_name: {
     type: String
   },
-  branch_div: {
+  avatar: {
     type: String
   },
   rank: {
     type: Number
+  },
+  rm_id: {
+    type: Number
   }
 })
 
-export default mongoose.model.employee || mongoose.model('employee', EmployeeSchema)
+export default mongoose.models.employee || mongoose.model('employee', EmployeeSchema)

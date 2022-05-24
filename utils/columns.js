@@ -21,7 +21,7 @@ export const COLUMNS = [
   },
   {
     Header: 'Branch/Division',
-    accessor: 'branch_div',
+    accessor: 'branch_name',
     width: 110
   },
   {
