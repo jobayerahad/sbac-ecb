@@ -6,8 +6,6 @@ const connect = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
-
-    console.log('Connected to database')
   }
 
   return { mongoose }
