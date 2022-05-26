@@ -1,7 +1,14 @@
+import NextCors from 'nextjs-cors'
 import connect from 'db/connect'
 import Employee from 'models/Employee'
 
 const employees = async (req, res) => {
+  await NextCors(req, res, {
+    methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  })
+
   const { emp_id, rm_id } = req.query
   const filter = emp_id ? { emp_id } : { rm_id }
   const select = ['-_id', '-__v', '-rank']
