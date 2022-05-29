@@ -34,7 +34,7 @@ const Table = ({ employees }) => {
 
   return (
     <>
-      <div className="flex-spaced">
+      <header className="flex-spaced filter">
         <select className="select-dropdown" value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
           {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
@@ -44,7 +44,7 @@ const Table = ({ employees }) => {
         </select>
 
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-      </div>
+      </header>
 
       <table className="table" {...getTableProps()}>
         <thead>
@@ -61,7 +61,7 @@ const Table = ({ employees }) => {
                     key={index}
                   >
                     {colRender('Header')}
-                    <span>{isSorted ? (isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                    <span key={index}>{isSorted ? (isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
                   </th>
                 )
               )}
