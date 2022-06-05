@@ -37,6 +37,10 @@ body {
   background: url('/images/background.webp') no-repeat center center fixed;
   background-size: cover;
   backdrop-filter: blur(1px);
+
+  @include respond(phone) {
+    padding: 0.5rem 1rem;
+  }
 }
 
 .logo {

@@ -46,45 +46,47 @@ const Table = ({ employees }) => {
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       </header>
 
-      <table className="table" {...getTableProps()}>
-        <thead>
-          {headerGroups.map(({ getHeaderGroupProps, headers }, index) => (
-            <tr {...getHeaderGroupProps()} key={index}>
-              {headers.map(
-                (
-                  { getHeaderProps, render: colRender, getSortByToggleProps, toggleSortBy, isSorted, isSortedDesc },
-                  index
-                ) => (
-                  <th
-                    {...getHeaderProps(getSortByToggleProps())}
-                    onClick={() => toggleSortBy(!isSortedDesc)}
-                    key={index}
-                  >
-                    {colRender('Header')}
-                    <span key={index}>{isSorted ? (isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                  </th>
-                )
-              )}
-            </tr>
-          ))}
-        </thead>
-
-        <tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
-            prepareRow(row)
-
-            return (
-              <tr {...row.getRowProps()} key={index}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} key={cell.column.id}>
-                    {cell.render('Cell')}
-                  </td>
-                ))}
+      <div className="table-container">
+        <table className="table" {...getTableProps()}>
+          <thead>
+            {headerGroups.map(({ getHeaderGroupProps, headers }, index) => (
+              <tr {...getHeaderGroupProps()} key={index}>
+                {headers.map(
+                  (
+                    { getHeaderProps, render: colRender, getSortByToggleProps, toggleSortBy, isSorted, isSortedDesc },
+                    index
+                  ) => (
+                    <th
+                      {...getHeaderProps(getSortByToggleProps())}
+                      onClick={() => toggleSortBy(!isSortedDesc)}
+                      key={index}
+                    >
+                      {colRender('Header')}
+                      <span key={index}>{isSorted ? (isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                    </th>
+                  )
+                )}
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, index) => {
+              prepareRow(row)
+
+              return (
+                <tr {...row.getRowProps()} key={index}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()} key={cell.column.id}>
+                      {cell.render('Cell')}
+                    </td>
+                  ))}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
 
       <p className="page-info">
         Page <span>{pageIndex + 1}</span> of <span>{pageOptions.length}</span>

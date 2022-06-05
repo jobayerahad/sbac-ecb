@@ -10,4 +10,9 @@
     background-color: #3c1053;
     color: #f5f5f5;
   }
+
+  @include respond(phone) {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
 }
