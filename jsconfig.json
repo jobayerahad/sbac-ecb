@@ -2,9 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@hooks/*": ["./hooks/*"],
+      "@db/*": ["./db/*"],
+      "@models/*": ["./models/*"],
       "@styles/*": ["./styles/*"],
-      "@store/*": ["./store/*"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"]
     }

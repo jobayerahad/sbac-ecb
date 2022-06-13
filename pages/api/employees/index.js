@@ -1,6 +1,7 @@
+import nc from 'next-connect'
 import NextCors from 'nextjs-cors'
-import connect from 'db/connect'
-import Employee from 'models/Employee'
+import connect from '@db/connect'
+import Employee from '@models/Employee'
 
 const employees = async (req, res) => {
   await NextCors(req, res, {
