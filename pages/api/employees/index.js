@@ -1,15 +1,11 @@
-import nc from 'next-connect'
-import NextCors from 'nextjs-cors'
 import connect from '@db/connect'
 import Employee from '@models/Employee'
+import Branch from '@models/Branch'
+import { getRank } from '@utils/helpers'
+import handler from '@utils/api'
 
-const employees = async (req, res) => {
-  await NextCors(req, res, {
-    methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  })
-
+// GET /api/employees
+handler.get(async (req, res) => {
   const { emp_id, rm_id } = req.query
   const filter = emp_id ? { emp_id } : { rm_id }
   const select = ['-_id', '-__v', '-rank']
@@ -17,21 +13,50 @@ const employees = async (req, res) => {
   try {
     connect()
 
-    if (req.method === 'GET') {
-      if (emp_id || rm_id) {
-        const employee = await Employee.findOne(filter).select(select)
+    if (emp_id || rm_id) {
+      const employee = await Employee.findOne(filter).select(select)
 
-        if (!employee) throw new Error('Employee not found')
-
-        return res.json(employee)
-      }
-
-      const employees = await Employee.find().sort({ rank: 1, emp_id: 1 }).select(select)
-      return res.json(employees)
+      if (!employee) throw new Error('Employee not found')
+      return res.json(employee)
     }
-  } catch (e) {
-    res.json({ ...filter, error: e.message })
-  }
-}
 
-export default employees
+    const employees = await Employee.find().sort({ rank: 1, emp_id: 1 }).select(select)
+    return res.json(employees)
+  } catch (e) {
+    res.status(404).json({ ...filter, error: e.message })
+  }
+})
+
+// POST /api/employees
+handler.post(async (req, res) => {
+  const { emp_id, designation, branch_code } = req.body
+
+  try {
+    connect()
+
+    const employee = await Employee.findOne({ emp_id })
+    const branch = await Branch.findOne({ branch_code })
+    const rank = getRank(designation)
+
+    if (employee) throw new Error('Employee already exists')
+
+    const newEmployee = new Employee({
+      ...req.body,
+      branch_name: branch.branch_name,
+      rank
+    })
+    await newEmployee.save()
+
+    return res.json(newEmployee)
+  } catch (e) {
+    if (e.name === 'ValidationError') {
+      let errors = []
+      Object.keys(e.errors).forEach((key) => errors.push(e.errors[key].message))
+      return res.status(400).send({ type: e.name, errors })
+    }
+
+    res.status(400).json({ error: e.message })
+  }
+})
+
+export default handler

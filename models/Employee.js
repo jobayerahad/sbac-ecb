@@ -3,11 +3,11 @@ import mongoose from 'mongoose'
 const EmployeeSchema = new mongoose.Schema({
   emp_id: {
     type: Number,
-    required: true
+    required: [true, "'emp_id' field is required"],
   },
   name: {
     type: String,
-    required: true
+    required: [true, "'name' field is required"],
   },
   email: {
     type: String
@@ -22,10 +22,12 @@ const EmployeeSchema = new mongoose.Schema({
     type: String
   },
   designation: {
-    type: String
+    type: String,
+    required: [true, "'designation' field is required"],
   },
   branch_code: {
-    type: Number
+    type: String,
+    required: [true, "'branch_code' field is required"],
   },
   branch_name: {
     type: String
