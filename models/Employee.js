@@ -23,11 +23,9 @@ const EmployeeSchema = new mongoose.Schema({
   },
   designation: {
     type: String,
-    required: [true, "'designation' field is required"],
   },
   branch_code: {
     type: String,
-    required: [true, "'branch_code' field is required"],
   },
   branch_name: {
     type: String

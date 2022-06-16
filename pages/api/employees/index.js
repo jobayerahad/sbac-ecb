@@ -35,10 +35,11 @@ handler.post(async (req, res) => {
     connect()
 
     const employee = await Employee.findOne({ emp_id })
-    const branch = await Branch.findOne({ branch_code })
-    const rank = getRank(designation)
-
     if (employee) throw new Error('Employee already exists')
+
+    const branch = await Branch.findOne({ branch_code: branch_code ? branch_code : '0001' })
+    const rank = getRank(designation)
+    console.log(rank)
 
     const newEmployee = new Employee({
       ...req.body,
