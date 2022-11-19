@@ -38,8 +38,9 @@ body {
   background-size: cover;
   backdrop-filter: blur(1px);
 
-  @include respond(phone) {
-    padding: 0.5rem 1rem;
+  ::selection {
+    background-color: #353b48;
+    color: #fff;
   }
 }
 
@@ -47,5 +48,4 @@ body {
   position: fixed;
   bottom: 1rem;
   right: 2rem;
-  width: 4rem;
 }

@@ -2,11 +2,24 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@db/*": ["./db/*"],
-      "@models/*": ["./models/*"],
-      "@styles/*": ["./styles/*"],
-      "@components/*": ["./components/*"],
-      "@utils/*": ["./utils/*"]
+      "@components/*": [
+        "./components/*"
+      ],
+      "@config/*": [
+        "./config/*"
+      ],
+      "@models/*": [
+        "./models/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@styles/*": [
+        "./styles/*"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ]
     }
   },
 }

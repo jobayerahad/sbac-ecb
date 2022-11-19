@@ -1,24 +1,29 @@
-import axios from 'axios'
-import { useQuery } from 'react-query'
-import Table from '@components/Table'
-import Error from '@components/common/Error'
-import Loader from '@components/Loader'
+import { Image, Text, Title } from '@mantine/core'
+import Loader from 'react-spinners/PuffLoader'
 
-const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/employees`
+import EmployeeTable from '@components/EmployeeTable'
+import Error from '@components/common/Error'
+import { useEmployeesData } from '@utils/api'
+import { sanitizeTableData } from '@utils/helpers'
 
 const Home = () => {
-  const { isLoading, error, data } = useQuery('employeeData', async () => (await axios.get(apiUrl)).data)
+  const { isLoading, error, data } = useEmployeesData()
 
-  if (isLoading) return <Loader />
+  if (isLoading)
+    return (
+      <div className="error-container">
+        <Loader />
+      </div>
+    )
   if (error) return <Error error={error} />
 
   return (
     <>
-      <h1 className="heading">SBAC Contact Information</h1>
+      <Title align="center">Employee Contact Information</Title>
 
-      <Table employees={data} />
+      <EmployeeTable employees={sanitizeTableData(data)} />
 
-      <img src="/images/logo-full.png" alt="SBAC Logo" className="logo" />
+      <Image src="/images/logo-full.png" alt="SBAC Logo" width={60} className="logo" />
     </>
   )
 }
