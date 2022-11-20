@@ -12,11 +12,13 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        if (query) {
+        if (query && Object.keys(query).length !== 0) {
           const employee = await Employee.find({
             [Object.keys(query)[0]]: Object.values(query)[0],
             emp_id: { $nin: hideEmployees }
-          }).select(['-_id', '-__v', '-rank'])
+          })
+            .sort({ rank: 1, emp_id: 1 })
+            .select(['-_id', '-__v', '-rank'])
 
           res.send(employee)
           break
