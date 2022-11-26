@@ -1,8 +1,7 @@
 import dbConnect from '@utils/dbConnect'
 import Employee from '@models/Employee'
 import { apiErrorMsg } from '@utils/helpers'
-
-const hideEmployees = [1067, 49]
+import { empOptions } from '@config/constants'
 
 export default async function handler(req, res) {
   const { method, query } = req
@@ -13,20 +12,28 @@ export default async function handler(req, res) {
     case 'GET':
       try {
         if (query && Object.keys(query).length !== 0) {
-          const employee = await Employee.find({
-            [Object.keys(query)[0]]: Object.values(query)[0],
-            emp_id: { $nin: hideEmployees }
-          })
-            .sort({ rank: 1, emp_id: 1 })
-            .select(['-_id', '-__v', '-rank'])
+          const key = Object.keys(query)[0]
+          const value = Object.values(query)[0]
+          const valIsNumber = Number(value)
+
+          let employee = null
+
+          if (valIsNumber) employee = await Employee.findOne({ [key]: Number(value) }).select(empOptions.filter)
+          else
+            employee = await Employee.find({
+              [key]: value,
+              emp_id: { $nin: empOptions.exclude, $lt: empOptions.range }
+            })
+              .sort(empOptions.sort)
+              .select(empOptions.filter)
 
           res.send(employee)
           break
         }
 
-        const employees = await Employee.find({ emp_id: { $nin: hideEmployees } })
-          .sort({ rank: 1, emp_id: 1 })
-          .select(['-_id', '-__v', '-rank'])
+        const employees = await Employee.find({ emp_id: { $nin: empOptions.exclude, $lt: empOptions.range } })
+          .sort(empOptions.sort)
+          .select(empOptions.filter)
 
         res.send(employees)
         break
