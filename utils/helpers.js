@@ -30,3 +30,15 @@ export const formatHrData = (data) => ({
   department: data.department,
   avatar: process.env.HRBOOK_URL + data.img_link
 })
+
+export const capitalizeString = (str) => {
+  const arr = str.split(' ')
+  const resStrArr = []
+
+  for (let i = 0; i < arr.length; i++) {
+    const element = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase()
+    resStrArr.push(element)
+  }
+
+  return resStrArr.join(' ')
+}

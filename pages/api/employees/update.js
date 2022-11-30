@@ -6,7 +6,7 @@ import dbConnect from '@utils/dbConnect'
 import Employee from '@models/Employee'
 import Branch from '@models/Branch'
 
-import { apiErrorMsg, apiSuccessMsg, formatHrData } from '@utils/helpers'
+import { apiErrorMsg, apiSuccessMsg, capitalizeString, formatHrData } from '@utils/helpers'
 import { getRank } from '@utils/desingation'
 
 export default async function handler(req, res) {
@@ -31,15 +31,16 @@ export default async function handler(req, res) {
 
           if (empData.branch_code) {
             const branch = await Branch.findOne({ branch_code: empData.branch_code })
-            empData.branch_name = branch.branch_name
+            empData.branch_name = branch?.branch_name
           }
 
+          empData.department = capitalizeString(empData.department)
           empData.rank = getRank(empData.designation)
 
           employees.push({ ...dbEmp?.toJSON(), ...empData })
         }
 
-        await Employee.deleteMany({}) // Delete all documents
+        await Employee.deleteMany() // Delete all documents
         await Employee.insertMany(employees) // Add current data
 
         const currentTime = format(new Date(), 'do MMMM yyyy, h:mm:ss a')
