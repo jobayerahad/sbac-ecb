@@ -34,6 +34,7 @@ export default async function handler(req, res) {
             empData.branch_name = branch?.branch_name
           }
 
+          empData.name = capitalizeString(empData.name)
           empData.department = capitalizeString(empData.department)
           empData.rank = getRank(empData.designation)
 
