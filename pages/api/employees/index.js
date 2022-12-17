@@ -4,7 +4,7 @@ import { apiErrorMsg } from '@utils/helpers'
 import { empOptions } from '@config/constants'
 
 export default async function handler(req, res) {
-  const { method, query } = req
+  const { method, query, body } = req
 
   await dbConnect()
 
@@ -37,6 +37,20 @@ export default async function handler(req, res) {
 
         res.send(employees)
         break
+      } catch (error) {
+        res.status(400).send(apiErrorMsg(400, error.message, 'Bad Request'))
+      }
+
+    case 'POST':
+      try {
+        if (typeof body.empIds !== 'object')
+          res.status(400).send(apiErrorMsg(400, 'EmpIds should be an object', 'Bad Request'))
+
+        const employees = await Employee.find({ emp_id: { $in: body.empIds, $lt: empOptions.range } })
+          .sort(empOptions.sort)
+          .select(empOptions.filter)
+
+        res.send(employees)
       } catch (error) {
         res.status(400).send(apiErrorMsg(400, error.message, 'Bad Request'))
       }
