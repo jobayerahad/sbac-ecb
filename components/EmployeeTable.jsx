@@ -20,14 +20,8 @@ const EmployeeTable = ({ employees }) => {
   const table = useReactTable({
     data,
     columns,
-    state: {
-      globalFilter
-    },
-    initialState: {
-      pagination: {
-        pageSize: 20
-      }
-    },
+    state: { globalFilter },
+    initialState: { pagination: { pageSize: 20 } },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel()

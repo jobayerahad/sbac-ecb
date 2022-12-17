@@ -1,5 +1,5 @@
-import { Image, Text, Title } from '@mantine/core'
-import Loader from 'react-spinners/PuffLoader'
+import { Image, Title } from '@mantine/core'
+import { PuffLoader } from 'react-spinners'
 
 import EmployeeTable from '@components/EmployeeTable'
 import Error from '@components/common/Error'
@@ -12,7 +12,7 @@ const Home = () => {
   if (isLoading)
     return (
       <div className="error-container">
-        <Loader />
+        <PuffLoader />
       </div>
     )
   if (error) return <Error error={error} />
