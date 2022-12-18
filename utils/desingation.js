@@ -25,6 +25,7 @@ export const designations = [
   { designation: 'MTO', rank: 14.6 },
   { designation: 'OFFICER', rank: 15 },
   { designation: 'OFFICER-CASH', rank: 15.5 },
+  { designation: 'PROBATIONARY OFFICER', rank: 15.4 },
   { designation: 'JO', rank: 16 },
   { designation: 'JO-CASH', rank: 16.5 },
   { designation: 'TJO', rank: 17 },
