@@ -1,5 +1,7 @@
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
+import { NotificationsProvider } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import '@styles/main.scss'
@@ -15,7 +17,11 @@ const App = ({ Component, pageProps }) => (
 
     <QueryClientProvider client={queryClient}>
       <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-        <Component {...pageProps} />
+        <NotificationsProvider>
+          <ModalsProvider>
+            <Component {...pageProps} />
+          </ModalsProvider>
+        </NotificationsProvider>
       </MantineProvider>
     </QueryClientProvider>
   </>

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-
 import { EMPLOYEES_DATA } from '@config/constants'
 
 const getEmployees = async () => {
