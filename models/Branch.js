@@ -11,18 +11,9 @@ const BranchSchema = new mongoose.Schema({
     area: String,
     nearest_place: String,
     post_code: String,
-    upazila: {
-      id: Number,
-      name: String
-    },
-    district: {
-      id: Number,
-      name: String
-    },
-    division: {
-      id: Number,
-      name: String
-    }
+    upazila: Number,
+    district: Number,
+    division: Number
   },
   routing_no: String,
   email: String,

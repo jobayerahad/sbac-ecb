@@ -84,7 +84,7 @@ const UpdateBranch = ({ data, closeModal }) => {
             { value: 'Urban', label: 'Urban' },
             { value: 'Rural', label: 'Rural' }
           ]}
-          {...getInputProps('address.upazila')}
+          {...getInputProps('address.area')}
         />
         <TextInput label="Nearest Place" icon={<IdIcon size={16} />} {...getInputProps('address.nearest_place')} />
       </SimpleGrid>
