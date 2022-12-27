@@ -8,3 +8,9 @@ const getEmployees = async () => {
 }
 
 export const useEmployeesData = () => useQuery([EMPLOYEES_DATA], () => getEmployees(), { refetchOnWindowFocus: false })
+
+export const getLocationList = async (location) => {
+  const { data } = await axios.get(`api/locations?type=${location}`)
+
+  return data.map(({ code, name_en, name_bn }) => ({ value: code, label: `${name_en} (${name_bn})` }))
+}

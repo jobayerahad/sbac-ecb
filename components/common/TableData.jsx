@@ -17,6 +17,7 @@ const TableData = ({ data, columns }) => {
     data,
     columns,
     state: { globalFilter },
+    initialState: { pagination: { pageSize: 12 } },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel()

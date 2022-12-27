@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Button, Select, SimpleGrid, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { DatePicker } from '@mantine/dates'
@@ -7,8 +8,12 @@ import { BsCalendarDate as OpeningDateIcon } from 'react-icons/bs'
 import PropTypes from 'prop-types'
 
 import { useUpdateBranchData } from './utils/apiCalls'
+import { getLocationList } from '@utils/api'
 
 const UpdateBranch = ({ data, closeModal }) => {
+  const [divisions, setDivisions] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [upazilas, setUpazilas] = useState([])
   const { mutate } = useUpdateBranchData()
 
   const { onSubmit, getInputProps, reset } = useForm({
@@ -34,6 +39,14 @@ const UpdateBranch = ({ data, closeModal }) => {
       opening_date: new Date(data.opening_date ? data.opening_date : '2013-04-28')
     }
   })
+
+  useEffect(() => {
+    ;(async () => {
+      setDivisions(await getLocationList('division'))
+      setDistricts(await getLocationList('district'))
+      setUpazilas(await getLocationList('thana'))
+    })()
+  }, [divisions])
 
   const submitHandler = (values) => {
     mutate({ id: data._id, ...values })
@@ -81,10 +94,7 @@ const UpdateBranch = ({ data, closeModal }) => {
         <Select
           label="Upazila or Thana"
           placeholder="Select upazila or thana"
-          data={[
-            { value: 'Urban', label: 'Urban' },
-            { value: 'Rural', label: 'Rural' }
-          ]}
+          data={upazilas}
           searchable
           {...getInputProps('address.upazila')}
         />
@@ -94,10 +104,7 @@ const UpdateBranch = ({ data, closeModal }) => {
         <Select
           label="District"
           placeholder="Select district"
-          data={[
-            { value: 'Urban', label: 'Urban' },
-            { value: 'Rural', label: 'Rural' }
-          ]}
+          data={districts}
           searchable
           {...getInputProps('address.district')}
         />
@@ -105,10 +112,7 @@ const UpdateBranch = ({ data, closeModal }) => {
         <Select
           label="Division"
           placeholder="Select division"
-          data={[
-            { value: 'Urban', label: 'Urban' },
-            { value: 'Rural', label: 'Rural' }
-          ]}
+          data={divisions}
           searchable
           {...getInputProps('address.division')}
         />
