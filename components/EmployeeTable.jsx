@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { utils, writeFileXLSX } from 'xlsx'
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,7 +8,7 @@ import {
   getFilteredRowModel
 } from '@tanstack/react-table'
 import { useDebouncedValue } from '@mantine/hooks'
-import { Group, Pagination, Paper, Select, Table, TextInput } from '@mantine/core'
+import { Button, Group, Pagination, Paper, Select, Table, TextInput } from '@mantine/core'
 
 import { COLUMNS } from '@utils/columns'
 
@@ -27,6 +28,13 @@ const EmployeeTable = ({ employees }) => {
     getPaginationRowModel: getPaginationRowModel()
   })
 
+  const exportFile = useCallback(() => {
+    const ws = utils.json_to_sheet(employees)
+    const wb = utils.book_new()
+    utils.book_append_sheet(wb, ws, 'Employee Info')
+    writeFileXLSX(wb, 'SBAC ECB.xlsx')
+  }, [employees])
+
   return (
     <>
       <Group grow>
@@ -40,7 +48,7 @@ const EmployeeTable = ({ employees }) => {
         />
 
         <div></div>
-        <div></div>
+        <Button onClick={exportFile}>Export</Button>
         <div></div>
 
         <TextInput placeholder="Search here..." value={search} onChange={(e) => setSearch(e.currentTarget.value)} />
