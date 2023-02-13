@@ -1,20 +1,20 @@
 import dbConnect from '@utils/dbConnect'
-import Branch from '@models/Branch'
+import Employee from '@models/Employee'
 import { apiErrorMsg } from '@utils/helpers'
+import { empOptions } from '@config/constants'
 
 export default async function handler(req, res) {
   const {
     method,
-    body,
     query: { id }
   } = req
 
   await dbConnect()
 
   switch (method) {
-    case 'PUT':
-      const branch = await Branch.findByIdAndUpdate(id, body, { new: true })
-      res.send(branch)
+    case 'GET':
+      const employees = await Employee.find({ branch_code: id }).sort(empOptions.sort).select(empOptions.filter)
+      res.send(employees)
       break
 
     default:

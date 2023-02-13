@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const branches = await Branch.find().sort({ branch_code: 1 })
+      const branches = await Branch.find().select(['branch_code', 'branch_name']).sort({ branch_code: 1 })
       res.send(branches)
       break
 
