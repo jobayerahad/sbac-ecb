@@ -43,7 +43,7 @@ const Structure = ({ children }: { children: ReactNode }) => {
 
         <div>
           <Title size={22} ta="center">
-            SBAC EmpDirectory
+            Employee Directory
           </Title>
           <Text c="dimmed" ta="center" size="xs">
             Find, Connect, Collaborate

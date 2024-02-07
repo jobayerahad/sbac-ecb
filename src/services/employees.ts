@@ -1,12 +1,12 @@
 'use server'
 
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import https from 'https'
 
 import Employee from '@models/Employee'
 import { connectToDB } from '@utils/database.utils'
 
-export const getEmployees = async (page: number, limit: number, search?: string) => {
+export const getEmployees = async (page: number, limit: number, search?: string, branch?: string) => {
   try {
     await connectToDB()
 
@@ -28,6 +28,8 @@ export const getEmployees = async (page: number, limit: number, search?: string)
         ].filter((condition) => condition.empId !== null)
       }
     }
+
+    if (branch) query['branch.code'] = { $regex: branch, $options: 'i' }
 
     const totalEmployees = await Employee.countDocuments(query)
     const totalPages = Math.ceil(totalEmployees / limit)
