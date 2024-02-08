@@ -39,7 +39,7 @@ const ContactBookUI = ({ branches }: { branches: IBranch[] }) => {
 
   useEffect(() => {
     setPage(1)
-  }, [interSearch])
+  }, [interSearch, branch])
 
   return (
     <Container size="lg" mt="xl">
