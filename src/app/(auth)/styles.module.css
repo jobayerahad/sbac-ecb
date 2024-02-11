@@ -1,0 +1,27 @@
+.container {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.paper {
+  background: light-dark(rgba(255, 255, 255, 0.75), rgba(0, 0, 0, 0.7));
+  backdrop-filter: blur(10px);
+}
+
+.credits {
+  position: absolute;
+  bottom: var(--mantine-spacing-xs);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.title {
+  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-gray-2));
+}
+
+.subtitle {
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-4));
+}

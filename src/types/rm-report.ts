@@ -1,10 +1,10 @@
-export type rmReportParams = {
+export type RmReportParams = {
   emp_id: number
   start_date: string
   end_date: string
 }
 
-export type rmReportProps = {
+export type RmReportProps = {
   empId: number
   startDate: Date | null
   endDate: Date | null

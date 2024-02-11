@@ -1,9 +1,11 @@
-// import RmReportForm from '@components/rm-report/Form'
+import type { Metadata } from 'next'
 
-const RmReportPage = () => (
-  <>
-    <></>
-  </>
-)
+import RmReportUI from './ui'
+
+export const metadata: Metadata = {
+  title: 'RM Report'
+}
+
+const RmReportPage = () => <RmReportUI />
 
 export default RmReportPage
