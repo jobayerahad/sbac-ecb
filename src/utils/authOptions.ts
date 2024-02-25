@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
-import { serverAPI } from '@utils/api'
+import api from '@utils/api'
 
 type User = {
   id: string
@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
         const token = process.env.INTERBRIDGE_ACCESS_TOKEN
 
         try {
-          const { data } = await serverAPI().post(
+          const { data } = await api().post(
             '/login',
             { clientId: credentials?.clientId, secretKey: credentials?.secretKey },
             { headers: { 'x-auth-token': token } }

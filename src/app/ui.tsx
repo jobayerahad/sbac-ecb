@@ -21,8 +21,8 @@ import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail a
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
 
-import { getEmployees } from '@services/employees'
-import { IBranch } from '@types'
+import { getEmployees } from './services'
+import { IBranch, IEmployee } from '@types'
 
 const ContactBookUI = ({ branches }: { branches: IBranch[] }) => {
   const [page, setPage] = useState(1)
@@ -46,10 +46,7 @@ const ContactBookUI = ({ branches }: { branches: IBranch[] }) => {
       <Group justify="space-between" mb="md">
         <Select
           placeholder="Branch/Sub-Branch"
-          data={branches.map((branch) => ({
-            value: branch.code,
-            label: `${branch.name} (${branch.code})`
-          }))}
+          data={[]}
           value={branch}
           onChange={(code) => setBranch(code || '')}
           searchable
@@ -97,7 +94,10 @@ const ContactBookUI = ({ branches }: { branches: IBranch[] }) => {
               </Paper>
             ))
           : data?.employees?.map(
-              ({ avatar, name, designation, department, branch, empId, cellNo, phone, email }, index) => (
+              (
+                { avatar, name, designation, department, branch, empId, cellNo, phone, email }: IEmployee,
+                index: number
+              ) => (
                 <Paper p="md" key={index} shadow="xs">
                   <Group justify="center">
                     <Avatar src={`https://hr.sbacbank.com${avatar}`} alt={name} size={100} />

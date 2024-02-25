@@ -1,11 +1,16 @@
+'use server'
+
 import axios, { AxiosInstance } from 'axios'
 
-const serverBaseURL: string = process.env.INTERBRIDGE_API as string
-const clientBaseURL: string = process.env.NEXT_PUBLIC_INTERBRIDGE_API as string
+const baseURL = process.env.NEXT_PUBLIC_INTERBRIDGE_API!
+const accessToken = process.env.INTERBRIDGE_ACCESS_TOKEN!
 
 // Create a common axios instance with base configurations
-const createApiInstance = (baseURL: string, token?: string): AxiosInstance => {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+const api = (token?: string): AxiosInstance => {
+  const headers: Record<string, string> = {}
+
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  else headers['x-auth-token'] = accessToken
 
   return axios.create({
     baseURL,
@@ -13,8 +18,4 @@ const createApiInstance = (baseURL: string, token?: string): AxiosInstance => {
   })
 }
 
-const clientAPI = (token: string): AxiosInstance => createApiInstance(clientBaseURL, token)
-const serverAPI = (token?: string): AxiosInstance => createApiInstance(serverBaseURL, token)
-
-export { clientAPI, serverAPI }
-export default clientAPI
+export default api
