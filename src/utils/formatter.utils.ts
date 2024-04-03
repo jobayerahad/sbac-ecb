@@ -1,13 +1,6 @@
-export const amountFormatter = (value: string) => {
-  if (!Number.isNaN(parseFloat(value))) {
-    const formattedValue = parseFloat(value)
-    return `${formattedValue}`.replace(/(\d)(?=(\d\d)+\d(?!\d))/g, '$1,')
-  } else return ''
-}
+import { TLocation } from '@types'
 
-export const amountParser = (value: string) => value.replace(/\$\s?|(,*)/g, '')
-
-type Data = {
+type HrData = {
   emp_id: string
   emp_key: string
   name?: string
@@ -18,7 +11,7 @@ type Data = {
 
 const removeSalute = (name: string) => name.replace(/(mr|ms|miss|mrs|dr|sir)\.?/i, '').trim()
 
-export const formatHrData = (data: Data) => {
+export const formatHrData = (data: HrData) => {
   const nameParts = data.name?.split(',')
 
   return {
@@ -32,4 +25,30 @@ export const formatHrData = (data: Data) => {
     department: data.department,
     avatar: `${process.env.HRBOOK_URL}${data.img_link}`
   }
+}
+
+export const convertLocationData = (data: { branches: TLocation[]; sub_branches: TLocation[] }) => {
+  let convertedData = []
+
+  // Convert branches
+  const branches = data.branches.map((branch) => {
+    return {
+      value: branch.code,
+      label: `${branch.name.english} (${branch.code})`
+    }
+  })
+
+  convertedData.push({ group: 'Branches', items: branches })
+
+  // Convert sub-branches
+  const subBranches = data.sub_branches.map((subBranch) => {
+    return {
+      value: subBranch.code,
+      label: `${subBranch.name.english} (${subBranch.code})`
+    }
+  })
+
+  convertedData.push({ group: 'Sub-Branches', items: subBranches })
+
+  return convertedData
 }

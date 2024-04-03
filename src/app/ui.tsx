@@ -22,9 +22,17 @@ import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
 
 import { getEmployees } from './services'
-import { IBranch, IEmployee } from '@types'
+import { TLocation, IEmployee } from '@types'
+import { convertLocationData } from '@utils/formatter.utils'
 
-const ContactBookUI = ({ branches }: { branches: IBranch[] }) => {
+type Props = {
+  locations: {
+    branches: TLocation[]
+    sub_branches: TLocation[]
+  }
+}
+
+const ContactBookUI = ({ locations }: Props) => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState('8')
   const [branch, setBranch] = useState('')
@@ -46,7 +54,7 @@ const ContactBookUI = ({ branches }: { branches: IBranch[] }) => {
       <Group justify="space-between" mb="md">
         <Select
           placeholder="Branch/Sub-Branch"
-          data={[]}
+          data={convertLocationData(locations)}
           value={branch}
           onChange={(code) => setBranch(code || '')}
           searchable

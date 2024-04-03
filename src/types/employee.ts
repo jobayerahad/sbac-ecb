@@ -1,4 +1,4 @@
-import { IBranch } from './branch'
+import { IBranch } from './location'
 
 export type IEmployee = {
   empId: number

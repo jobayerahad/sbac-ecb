@@ -1,4 +1,4 @@
 export * from './auth'
-export * from './branch'
+export * from './location'
 export * from './employee'
 export * from './rm-report'
