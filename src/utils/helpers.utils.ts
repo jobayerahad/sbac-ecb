@@ -12,6 +12,8 @@ export const capitalizeString = (str: string): string => {
     .join(' ')
 }
 
+export const capWords = (str: string) => str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())
+
 export const formatDate = (date: Date | null) => dayjs(date).format('MM/DD/YYYY')
 export const formatDateView = (date: Date | null) => dayjs(date).format('Do MMM, YYYY')
 

@@ -21,15 +21,12 @@ import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail a
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
 
-import { getEmployees } from './services'
-import { TLocation, IEmployee } from '@types'
-import { convertLocationData } from '@utils/formatter.utils'
+import { getEmployees } from '@actions/employees'
+import { capWords } from '@utils/helpers.utils'
+import { TEmployee } from '@types'
 
 type Props = {
-  locations: {
-    branches: TLocation[]
-    sub_branches: TLocation[]
-  }
+  locations: any
 }
 
 const ContactBookUI = ({ locations }: Props) => {
@@ -50,11 +47,11 @@ const ContactBookUI = ({ locations }: Props) => {
   }, [interSearch, branch])
 
   return (
-    <Container size="lg" mt="xl">
-      <Group justify="space-between" mb="md">
+    <Container size="lg" mt="md">
+      <Group justify="space-between" mb="sm">
         <Select
           placeholder="Branch/Sub-Branch"
-          data={convertLocationData(locations)}
+          data={locations}
           value={branch}
           onChange={(code) => setBranch(code || '')}
           searchable
@@ -73,7 +70,7 @@ const ContactBookUI = ({ locations }: Props) => {
         />
       </Group>
 
-      <SimpleGrid cols={4}>
+      <SimpleGrid spacing="xs" cols={4}>
         {isLoading
           ? [...Array(8)].map((_, index) => (
               <Paper key={index} p="md" shadow="xs">
@@ -103,20 +100,20 @@ const ContactBookUI = ({ locations }: Props) => {
             ))
           : data?.employees?.map(
               (
-                { avatar, name, designation, department, branch, empId, cellNo, phone, email }: IEmployee,
+                { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
                 index: number
               ) => (
-                <Paper p="md" key={index} shadow="xs">
+                <Paper p="sm" key={index} shadow="xs">
                   <Group justify="center">
-                    <Avatar src={`https://hr.sbacbank.com${avatar}`} alt={name} size={100} />
+                    <Avatar src={avatar} alt={name} size={100} />
                   </Group>
 
                   <Title order={4} ta="center" size="xs" mt={12}>
-                    {name}
+                    {capWords(name)}
                   </Title>
 
                   <Text size="xs" ta="center" mt={4}>
-                    {designation}, {department}
+                    {designation}, {capWords(department)}
                   </Text>
 
                   {branch && (
@@ -149,7 +146,7 @@ const ContactBookUI = ({ locations }: Props) => {
             )}
       </SimpleGrid>
 
-      <Group justify="space-between" mt="md">
+      <Group justify="space-between" mt="xs">
         <Select
           label="Data Per Page"
           data={['8', '16', '40', '100']}
@@ -166,7 +163,7 @@ const ContactBookUI = ({ locations }: Props) => {
           total={data?.pagination.totalPages || 1}
           disabled={isLoading}
         />
-        <Text size="sm">Total: {data?.pagination?.total} employees</Text>
+        <Text size="sm">Total: {data?.pagination?.total || 0} employees</Text>
       </Group>
     </Container>
   )

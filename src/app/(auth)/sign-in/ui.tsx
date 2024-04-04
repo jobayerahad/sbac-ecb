@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
-import { PasswordInput, Button, Title, Text, TextInput, Group, Anchor } from '@mantine/core'
+import { PasswordInput, Button, Title, Text, TextInput } from '@mantine/core'
 import { useForm, yupResolver } from '@mantine/form'
 import { showNotification } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
@@ -73,7 +73,7 @@ const SignInUI = () => {
         {...getInputProps('secretKey')}
       />
 
-      <Button type="submit" leftSection={<SignInIcon size="1.1rem" />} mt="md" loading={isLoading} fullWidth>
+      <Button type="submit" leftSection={<SignInIcon size="1.1rem" />} mt="lg" loading={isLoading} fullWidth>
         Sign In
       </Button>
     </form>

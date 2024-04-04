@@ -1,7 +1,6 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
-import { Button, Container, NumberInput, SimpleGrid } from '@mantine/core'
+import { Button, Container, Group, NumberInput } from '@mantine/core'
 import { useForm, yupResolver } from '@mantine/form'
 import { DatePickerInput } from '@mantine/dates'
 
@@ -10,13 +9,12 @@ import { BsCalendarDate as DateIcon } from 'react-icons/bs'
 import { HiOutlineIdentification as IdIcon } from 'react-icons/hi'
 
 import RmTable from './table'
-import { useRmReportData } from '@mutations/rm-report.mutate'
+import { useRmReportData } from '@global-states/rm-report'
 import { rmReportSchema } from '@schemas/rm-report.schema'
 import { formatDate } from '@utils/helpers.utils'
 import { RmReportProps } from '@types'
 
 const RmReportUI = () => {
-  const { data: session } = useSession()
   const { data, mutate, isPending, status } = useRmReportData()
 
   const { onSubmit, getInputProps, reset } = useForm<RmReportProps>({
@@ -30,20 +28,17 @@ const RmReportUI = () => {
 
   const submitHandler = async (val: RmReportProps) => {
     mutate({
-      token: session?.user.id || '',
-      params: {
-        emp_id: val.empId,
-        start_date: formatDate(val.startDate),
-        end_date: formatDate(val.endDate)
-      }
+      emp_id: val.empId,
+      start_date: formatDate(val.startDate),
+      end_date: formatDate(val.endDate)
     })
     // reset()
   }
 
   return (
-    <Container size="xl">
+    <Container size="lg">
       <form onSubmit={onSubmit(submitHandler)}>
-        <SimpleGrid cols={4}>
+        <Group align="flex-end">
           <NumberInput
             label="Employee ID"
             placeholder="Your employee ID"
@@ -52,6 +47,7 @@ const RmReportUI = () => {
             maxLength={4}
             hideControls
             required
+            flex={1}
             {...getInputProps('empId')}
           />
 
@@ -64,6 +60,7 @@ const RmReportUI = () => {
             maxDate={new Date()}
             hideOutsideDates
             required
+            flex={1}
             {...getInputProps('startDate')}
           />
 
@@ -76,13 +73,14 @@ const RmReportUI = () => {
             maxDate={new Date()}
             hideOutsideDates
             required
+            flex={1}
             {...getInputProps('endDate')}
           />
 
           <Button type="submit" size="sm" leftSection={<SubmitIcon size="1.1rem" />} loading={isPending} mt="md">
             Submit
           </Button>
-        </SimpleGrid>
+        </Group>
       </form>
 
       {status === 'success' && <RmTable data={data} />}

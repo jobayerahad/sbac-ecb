@@ -44,7 +44,7 @@ const RmTable = ({ data }: { data: AccountInfo[] }) => (
       <Table.Tfoot>
         <Table.Tr>
           <Table.Th></Table.Th>
-          <Table.Th colSpan={4}>Total</Table.Th>
+          <Table.Th colSpan={5}>Total</Table.Th>
           <Table.Th colSpan={2}>
             {data
               .reduce((totalBalance, currentItem) => totalBalance + currentItem.balance, 0)

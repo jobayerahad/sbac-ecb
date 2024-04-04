@@ -1,17 +1,18 @@
-import { IBranch } from './location'
-
-export type IEmployee = {
+export type TEmployee = {
   empId: number
   name: string
   email: string
-  phone?: string
-  cellNo?: string
-  department?: string
-  designation?: string
-  rank?: number
-  branch?: IBranch
-  avatar?: string
+  phone: string
+  cellNo: string
+  department: string
+  designation: string
+  rank: number
+  branch: {
+    code: string
+    name: string
+  }
+  avatar: string
   empKey: number
-  rmId?: number
-  cbsId?: number
+  rmId: number
+  cbsId: number
 }
