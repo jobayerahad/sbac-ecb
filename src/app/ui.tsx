@@ -47,7 +47,7 @@ const ContactBookUI = ({ locations }: Props) => {
   }, [interSearch, branch])
 
   return (
-    <Container size="lg" mt="md">
+    <Container size="xl" mt="md">
       <Group justify="space-between" mb="sm">
         <Select
           placeholder="Branch/Sub-Branch"

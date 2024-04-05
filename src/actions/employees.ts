@@ -22,3 +22,12 @@ export const getEmployees = async (page: number, limit: number, search?: string,
   const { data } = await api().get('/employees', { params: { page, limit, search, branch } })
   return data
 }
+
+export const getEmployee = async (emp_id: number) => {
+  try {
+    const { data } = await api().get('/employees', { params: { emp_id } })
+    return data
+  } catch (error) {
+    return null
+  }
+}
