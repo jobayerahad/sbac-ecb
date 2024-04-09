@@ -11,7 +11,7 @@ export const getRmReport = async (params: RmReportParams) => {
   try {
     const session = await getServerSession(authOptions)
 
-    const { data } = await api(session?.user.id).get('/cbs/rm-report', { params })
+    const { data } = await api(session?.user.id).post('/cbs/rm-report', params)
     return data
   } catch (error) {
     if (error instanceof AxiosError) return error.response?.data

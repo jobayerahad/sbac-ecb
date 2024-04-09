@@ -7,5 +7,8 @@ import { getRmReport } from '@actions/employees'
 export const useRmReportData = () =>
   useMutation({
     mutationFn: getRmReport,
+    onSuccess: (data: any) => {
+      if (data?.statusCode) throw new Error(data.message)
+    },
     onError: (err: typeof Error) => showNotification(getErrorMessage(err))
   })
