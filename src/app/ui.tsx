@@ -129,7 +129,7 @@ const ContactBookUI = ({ locations }: Props) => {
 
                   <Group mt={6} gap={8}>
                     <MobileIcon size={12} />
-                    <Text size="xs">+{cellNo || 'Not provided'}</Text>
+                    <Text size="xs">{cellNo || 'Not provided'}</Text>
                   </Group>
 
                   <Group mt={6} gap={8}>

@@ -12,17 +12,14 @@ export const getLocations = async (type: string): Promise<TLocation[] | null> =>
     return data
   } catch (error) {
     if (error instanceof AxiosError && error.response) return error.response.data
-    else {
-      console.error('Error occurred while fetching locations:', error)
-      return null
-    }
+    return null
   }
 }
 
 export const getBranches = async () => {
   try {
-    const branches = await getLocations('branch')
-    const subBranches = await getLocations('sub-branch')
+    const { data: branches } = await api().get(`/locations/type/branch`)
+    const { data: subBranches } = await api().get(`/locations/type/sub-branch`)
 
     if (!branches || !subBranches) return []
     return convertLocationData({ branches, subBranches })

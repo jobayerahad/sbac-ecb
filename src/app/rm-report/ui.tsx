@@ -19,7 +19,7 @@ const RmReportUI = () => {
 
   const { onSubmit, getInputProps, reset } = useForm<RmReportProps>({
     initialValues: {
-      empId: 0,
+      empId: undefined,
       startDate: null,
       endDate: null
     },
@@ -28,7 +28,7 @@ const RmReportUI = () => {
 
   const submitHandler = async (val: RmReportProps) => {
     mutate({
-      emp_id: val.empId,
+      emp_id: Number(val.empId),
       start_date: formatDate(val.startDate),
       end_date: formatDate(val.endDate)
     })

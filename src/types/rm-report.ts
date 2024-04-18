@@ -5,7 +5,7 @@ export type RmReportParams = {
 }
 
 export type RmReportProps = {
-  empId: number
+  empId: number | undefined
   startDate: Date | null
   endDate: Date | null
 }

@@ -11,8 +11,8 @@ export const convertLocationData = (data: { branches: TLocation[]; subBranches: 
     }
   })
 
-  // convertedData.push({ group: 'Branches', items: branches })
-  convertedData.push(...branches)
+  convertedData.push({ group: 'Branches', items: branches })
+  // convertedData.push(...branches)
 
   // Convert sub-branches
   const subBranches = data.subBranches.map((subBranch) => {
@@ -22,8 +22,8 @@ export const convertLocationData = (data: { branches: TLocation[]; subBranches: 
     }
   })
 
-  // convertedData.push({ group: 'Sub-Branches', items: subBranches })
-  convertedData.push(...subBranches)
+  convertedData.push({ group: 'Sub-Branches', items: subBranches })
+  // convertedData.push(...subBranches)
 
   return convertedData
 }
