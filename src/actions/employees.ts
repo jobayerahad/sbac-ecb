@@ -19,8 +19,12 @@ export const getRmReport = async (params: RmReportParams) => {
 }
 
 export const getEmployees = async (page: number, limit: number, search?: string, branch?: string) => {
-  const { data } = await api().get('/employees', { params: { page, limit, search, branch } })
-  return data
+  try {
+    const { data } = await api().get('/employees', { params: { page, limit, search, branch } })
+    return data
+  } catch (error) {
+    if (error instanceof AxiosError) return null
+  }
 }
 
 export const getEmployee = async (emp_id: number) => {

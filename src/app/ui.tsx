@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import {
+  Alert,
   Avatar,
   Container,
   Group,
@@ -20,6 +21,7 @@ import { useQuery } from '@tanstack/react-query'
 import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail as EmailIcon } from 'react-icons/md'
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
+import { MdErrorOutline as ErrorIcon } from 'react-icons/md'
 
 import { getEmployees } from '@actions/employees'
 import { capWords } from '@utils/helpers.utils'
@@ -48,123 +50,136 @@ const ContactBookUI = ({ locations }: Props) => {
 
   return (
     <Container size="xl" mt="md">
-      <Group justify="space-between" mb="sm">
-        <Select
-          placeholder="Branch/Sub-Branch"
-          data={locations}
-          value={branch}
-          onChange={(code) => setBranch(code || '')}
-          searchable
-          miw="25%"
-          disabled={isLoading}
-        />
+      {data ? (
+        <>
+          <Group justify="space-between" mb="sm">
+            <Select
+              placeholder="Branch/Sub-Branch"
+              data={locations}
+              value={branch}
+              onChange={(code) => setBranch(code || '')}
+              searchable
+              miw="25%"
+              disabled={isLoading}
+            />
 
-        <TextInput
-          placeholder="Search..."
-          value={interSearch}
-          onChange={(event) => setInterSearch(event.currentTarget.value)}
-          leftSection={<SearchIcon />}
-          autoFocus
-          miw="33.3%"
-          disabled={isLoading}
-        />
-      </Group>
+            <TextInput
+              placeholder="Search..."
+              value={interSearch}
+              onChange={(event) => setInterSearch(event.currentTarget.value)}
+              leftSection={<SearchIcon />}
+              data-autofocus
+              miw="33.3%"
+              disabled={isLoading}
+            />
+          </Group>
 
-      <SimpleGrid spacing="xs" cols={4}>
-        {isLoading
-          ? [...Array(8)].map((_, index) => (
-              <Paper key={index} p="md" shadow="xs">
-                <Group justify="center" gap="xs">
-                  <Skeleton height={100} circle />
-                  <Skeleton height={8} radius="xl" w="90%" h={14} mt={12} />
-                  <Skeleton height={8} radius="xl" w="80%" h={10} />
-                  <Skeleton height={8} radius="xl" w="70%" h={10} />
-                </Group>
-                <Group mt="md" gap={4}>
-                  <IdIcon />
-                  <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                </Group>
-                <Group mt={6} gap={8}>
-                  <MobileIcon size={12} />
-                  <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                </Group>
-                <Group mt={6} gap={8}>
-                  <PhoneIcon size={12} />
-                  <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                </Group>
-                <Group mt={6} gap={8}>
-                  <EmailIcon size={12} />
-                  <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                </Group>
-              </Paper>
-            ))
-          : data?.employees?.map(
-              (
-                { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
-                index: number
-              ) => (
-                <Paper p="sm" key={index} shadow="xs">
-                  <Group justify="center">
-                    <Avatar src={avatar} alt={name} size={100} />
-                  </Group>
+          <SimpleGrid spacing="xs" cols={4}>
+            {isLoading
+              ? [...Array(8)].map((_, index) => (
+                  <Paper key={index} p="md" shadow="xs">
+                    <Group justify="center" gap="xs">
+                      <Skeleton height={100} circle />
+                      <Skeleton height={8} radius="xl" w="90%" h={14} mt={12} />
+                      <Skeleton height={8} radius="xl" w="80%" h={10} />
+                      <Skeleton height={8} radius="xl" w="70%" h={10} />
+                    </Group>
 
-                  <Title order={4} ta="center" size="xs" mt={12}>
-                    {capWords(name)}
-                  </Title>
+                    <Group mt="md" gap={4}>
+                      <IdIcon />
+                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
+                    </Group>
 
-                  <Text size="xs" ta="center" mt={4}>
-                    {designation}, {capWords(department)}
-                  </Text>
+                    <Group mt={6} gap={8}>
+                      <MobileIcon size={12} />
+                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
+                    </Group>
 
-                  {branch && (
-                    <Text size="xs" ta="center">
-                      {branch?.name} ({branch?.code})
-                    </Text>
-                  )}
+                    <Group mt={6} gap={8}>
+                      <PhoneIcon size={12} />
+                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
+                    </Group>
 
-                  <Group mt={12} gap={4}>
-                    <IdIcon />
-                    <Text size="xs">Employee ID: {empId}</Text>
-                  </Group>
+                    <Group mt={6} gap={8}>
+                      <EmailIcon size={12} />
+                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
+                    </Group>
+                  </Paper>
+                ))
+              : data?.employees?.map(
+                  (
+                    { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
+                    index: number
+                  ) => (
+                    <Paper p="sm" key={index} shadow="xs">
+                      <Group justify="center">
+                        <Avatar src={avatar} alt={name} size={100} />
+                      </Group>
 
-                  <Group mt={6} gap={8}>
-                    <MobileIcon size={12} />
-                    <Text size="xs">{cellNo || 'Not provided'}</Text>
-                  </Group>
+                      <Title order={4} ta="center" size="xs" mt={12}>
+                        {capWords(name)}
+                      </Title>
 
-                  <Group mt={6} gap={8}>
-                    <PhoneIcon size={12} />
-                    <Text size="xs">{phone || 'Not provided'}</Text>
-                  </Group>
+                      <Text size="xs" ta="center" mt={4}>
+                        {designation}, {capWords(department)}
+                      </Text>
 
-                  <Group mt={6} gap={8}>
-                    <EmailIcon size={12} />
-                    <Text size="xs">{email || 'Not provided'}</Text>
-                  </Group>
-                </Paper>
-              )
-            )}
-      </SimpleGrid>
+                      {branch && (
+                        <Text size="xs" ta="center">
+                          {branch?.name} ({branch?.code})
+                        </Text>
+                      )}
 
-      <Group justify="space-between" mt="xs">
-        <Select
-          label="Data Per Page"
-          data={['8', '16', '40', '100']}
-          value={limit}
-          onChange={(val) => setLimit(val || '')}
-          allowDeselect={false}
-          size="xs"
-          disabled={isLoading}
-        />
-        <Pagination
-          size="sm"
-          value={page}
-          onChange={setPage}
-          total={data?.pagination.totalPages || 1}
-          disabled={isLoading}
-        />
-        <Text size="sm">Total: {data?.pagination?.total || 0} employees</Text>
-      </Group>
+                      <Group mt={12} gap={4}>
+                        <IdIcon />
+                        <Text size="xs">Employee ID: {empId}</Text>
+                      </Group>
+
+                      <Group mt={6} gap={8}>
+                        <MobileIcon size={12} />
+                        <Text size="xs">{cellNo || 'Not provided'}</Text>
+                      </Group>
+
+                      <Group mt={6} gap={8}>
+                        <PhoneIcon size={12} />
+                        <Text size="xs">{phone || 'Not provided'}</Text>
+                      </Group>
+
+                      <Group mt={6} gap={8}>
+                        <EmailIcon size={12} />
+                        <Text size="xs">{email || 'Not provided'}</Text>
+                      </Group>
+                    </Paper>
+                  )
+                )}
+          </SimpleGrid>
+
+          <Group justify="space-between" mt="xs">
+            <Select
+              label="Data Per Page"
+              data={['8', '16', '40', '100']}
+              value={limit}
+              onChange={(val) => setLimit(val || '')}
+              allowDeselect={false}
+              size="xs"
+              disabled={isLoading}
+            />
+
+            <Pagination
+              size="sm"
+              value={page}
+              onChange={setPage}
+              total={data?.pagination.totalPages || 1}
+              disabled={isLoading}
+            />
+            <Text size="sm">Total: {data?.pagination?.total || 0} employees</Text>
+          </Group>
+        </>
+      ) : (
+        <Alert title="Something Went Wrong!" icon={<ErrorIcon />} color="red">
+          Maybe the application couldn&apos;t connect with InterBridge API Properly. Please contact Admin.
+        </Alert>
+      )}
     </Container>
   )
 }
