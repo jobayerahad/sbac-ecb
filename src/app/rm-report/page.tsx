@@ -6,6 +6,4 @@ export const metadata: Metadata = {
   title: 'RM Report'
 }
 
-const RmReportPage = () => <RmReportUI />
-
-export default RmReportPage
+export default RmReportUI

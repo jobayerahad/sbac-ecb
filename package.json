@@ -1,11 +1,11 @@
 {
   "name": "employee-directory",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 5100",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {

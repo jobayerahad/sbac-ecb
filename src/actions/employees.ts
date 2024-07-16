@@ -1,6 +1,5 @@
 'use server'
 
-import { AxiosError } from 'axios'
 import { getServerSession } from 'next-auth'
 
 import api from '@utils/api'
@@ -14,7 +13,7 @@ export const getRmReport = async (params: RmReportParams) => {
     const { data } = await api(session?.user.id).post('/cbs/rm-report', params)
     return data
   } catch (error) {
-    if (error instanceof AxiosError) return error.response?.data
+    return null
   }
 }
 
@@ -23,7 +22,7 @@ export const getEmployees = async (page = 1, limit = 8, search?: string, branch?
     const { data } = await api().get('/employees', { params: { page, limit, search, branch } })
     return data
   } catch (error) {
-    if (error instanceof AxiosError) return null
+    return null
   }
 }
 

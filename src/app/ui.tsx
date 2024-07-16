@@ -11,7 +11,6 @@ import {
   Paper,
   Select,
   SimpleGrid,
-  Skeleton,
   Text,
   TextInput,
   Title
@@ -58,7 +57,7 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
           <Group justify="space-between" mb="sm">
             <Select
               placeholder="Branch/Sub-Branch"
-              data={locations}
+              data={locations || []}
               value={branch}
               onChange={handleBranchChange}
               searchable
