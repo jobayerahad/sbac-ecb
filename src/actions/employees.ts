@@ -18,7 +18,7 @@ export const getRmReport = async (params: RmReportParams) => {
   }
 }
 
-export const getEmployees = async (page: number, limit: number, search?: string, branch?: string) => {
+export const getEmployees = async (page = 1, limit = 8, search?: string, branch?: string) => {
   try {
     const { data } = await api().get('/employees', { params: { page, limit, search, branch } })
     return data

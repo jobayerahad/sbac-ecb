@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   Alert,
   Avatar,
@@ -16,51 +17,52 @@ import {
   Title
 } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
-import { useQuery } from '@tanstack/react-query'
 
 import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail as EmailIcon } from 'react-icons/md'
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
 import { MdErrorOutline as ErrorIcon } from 'react-icons/md'
 
-import { getEmployees } from '@actions/employees'
+import useNavigation from '@hooks/useNavigation'
 import { capWords } from '@utils/helpers.utils'
-import { TEmployee } from '@types'
+import { TEmployee, TPaginatedRes } from '@types'
 
 type Props = {
   locations: any
+  data: TPaginatedRes<TEmployee>
 }
 
-const ContactBookUI = ({ locations }: Props) => {
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState('8')
-  const [branch, setBranch] = useState('')
+const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) => {
+  const searchParams = useSearchParams()!
+  const { navigate } = useNavigation()
+
+  const page = Number(searchParams.get('page')) || 1
+  const limit = searchParams.get('limit') || '8'
+  const branch = searchParams.get('branch') || ''
+
+  const handlePageChange = (val: number) => navigate('page', val.toString())
+  const handleLimitChange = (val: string | null) => navigate('limit', val!)
+  const handleBranchChange = (val: string | null) => navigate('branch', val || '')
+
   const [interSearch, setInterSearch] = useState('')
   const [search] = useDebouncedValue(interSearch, 400)
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['contacts', page, limit, search, branch],
-    queryFn: () => getEmployees(page, Number(limit), search, branch),
-    refetchOnWindowFocus: false
-  })
-
   useEffect(() => {
-    setPage(1)
-  }, [interSearch, branch])
+    navigate('search', search)
+  }, [search, navigate])
 
   return (
     <Container size="xl" mt="md">
-      {data ? (
+      {employees ? (
         <>
           <Group justify="space-between" mb="sm">
             <Select
               placeholder="Branch/Sub-Branch"
               data={locations}
               value={branch}
-              onChange={(code) => setBranch(code || '')}
+              onChange={handleBranchChange}
               searchable
               miw="25%"
-              disabled={isLoading}
             />
 
             <TextInput
@@ -70,88 +72,56 @@ const ContactBookUI = ({ locations }: Props) => {
               leftSection={<SearchIcon />}
               data-autofocus
               miw="33.3%"
-              disabled={isLoading}
             />
           </Group>
 
           <SimpleGrid spacing="xs" cols={4}>
-            {isLoading
-              ? [...Array(8)].map((_, index) => (
-                  <Paper key={index} p="md" shadow="xs">
-                    <Group justify="center" gap="xs">
-                      <Skeleton height={100} circle />
-                      <Skeleton height={8} radius="xl" w="90%" h={14} mt={12} />
-                      <Skeleton height={8} radius="xl" w="80%" h={10} />
-                      <Skeleton height={8} radius="xl" w="70%" h={10} />
-                    </Group>
+            {employees.map(
+              (
+                { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
+                index: number
+              ) => (
+                <Paper p="sm" key={index} shadow="xs">
+                  <Group justify="center">
+                    <Avatar src={avatar} alt={name} size={100} />
+                  </Group>
 
-                    <Group mt="md" gap={4}>
-                      <IdIcon />
-                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                    </Group>
+                  <Title order={4} ta="center" size="xs" mt={12}>
+                    {capWords(name)}
+                  </Title>
 
-                    <Group mt={6} gap={8}>
-                      <MobileIcon size={12} />
-                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                    </Group>
+                  <Text size="xs" ta="center" mt={4}>
+                    {designation}, {capWords(department)}
+                  </Text>
 
-                    <Group mt={6} gap={8}>
-                      <PhoneIcon size={12} />
-                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                    </Group>
+                  {branch && (
+                    <Text size="xs" ta="center">
+                      {branch?.name} ({branch?.code})
+                    </Text>
+                  )}
 
-                    <Group mt={6} gap={8}>
-                      <EmailIcon size={12} />
-                      <Skeleton height={8} mt={6} radius="xl" w="50%" />
-                    </Group>
-                  </Paper>
-                ))
-              : data?.employees?.map(
-                  (
-                    { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
-                    index: number
-                  ) => (
-                    <Paper p="sm" key={index} shadow="xs">
-                      <Group justify="center">
-                        <Avatar src={avatar} alt={name} size={100} />
-                      </Group>
+                  <Group mt={12} gap={4}>
+                    <IdIcon />
+                    <Text size="xs">Employee ID: {empId}</Text>
+                  </Group>
 
-                      <Title order={4} ta="center" size="xs" mt={12}>
-                        {capWords(name)}
-                      </Title>
+                  <Group mt={6} gap={8}>
+                    <MobileIcon size={12} />
+                    <Text size="xs">{cellNo || 'Not provided'}</Text>
+                  </Group>
 
-                      <Text size="xs" ta="center" mt={4}>
-                        {designation}, {capWords(department)}
-                      </Text>
+                  <Group mt={6} gap={8}>
+                    <PhoneIcon size={12} />
+                    <Text size="xs">{phone || 'Not provided'}</Text>
+                  </Group>
 
-                      {branch && (
-                        <Text size="xs" ta="center">
-                          {branch?.name} ({branch?.code})
-                        </Text>
-                      )}
-
-                      <Group mt={12} gap={4}>
-                        <IdIcon />
-                        <Text size="xs">Employee ID: {empId}</Text>
-                      </Group>
-
-                      <Group mt={6} gap={8}>
-                        <MobileIcon size={12} />
-                        <Text size="xs">{cellNo || 'Not provided'}</Text>
-                      </Group>
-
-                      <Group mt={6} gap={8}>
-                        <PhoneIcon size={12} />
-                        <Text size="xs">{phone || 'Not provided'}</Text>
-                      </Group>
-
-                      <Group mt={6} gap={8}>
-                        <EmailIcon size={12} />
-                        <Text size="xs">{email || 'Not provided'}</Text>
-                      </Group>
-                    </Paper>
-                  )
-                )}
+                  <Group mt={6} gap={8}>
+                    <EmailIcon size={12} />
+                    <Text size="xs">{email || 'Not provided'}</Text>
+                  </Group>
+                </Paper>
+              )
+            )}
           </SimpleGrid>
 
           <Group justify="space-between" mt="xs">
@@ -159,20 +129,13 @@ const ContactBookUI = ({ locations }: Props) => {
               label="Data Per Page"
               data={['8', '16', '40', '100']}
               value={limit}
-              onChange={(val) => setLimit(val || '')}
+              onChange={handleLimitChange}
               allowDeselect={false}
               size="xs"
-              disabled={isLoading}
             />
 
-            <Pagination
-              size="sm"
-              value={page}
-              onChange={setPage}
-              total={data?.pagination.totalPages || 1}
-              disabled={isLoading}
-            />
-            <Text size="sm">Total: {data?.pagination?.total || 0} employees</Text>
+            <Pagination size="sm" value={page} onChange={handlePageChange} total={pagination.totalPages} />
+            <Text size="sm">Total: {pagination.total} employees</Text>
           </Group>
         </>
       ) : (
