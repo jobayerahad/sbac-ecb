@@ -76,7 +76,7 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
           </Group>
 
           <SimpleGrid spacing="xs" cols={4}>
-            {employees.map(
+            {employees?.map(
               (
                 { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
                 index: number
