@@ -63,7 +63,7 @@ const StructureShell = ({ children }: Props) => {
         </div>
 
         <Group>
-          {status === 'unauthenticated' &&
+          {/* {status === 'unauthenticated' &&
             ip?.startsWith('172.19.100.') &&
             parseInt(ip?.split('.')[3]) >= 1 &&
             parseInt(ip?.split('.')[3]) <= 254 && (
@@ -82,7 +82,7 @@ const StructureShell = ({ children }: Props) => {
                 <LogoutIcon />
               </ActionIcon>
             </>
-          )}
+          )} */}
 
           {isClient ? (
             <ActionIcon

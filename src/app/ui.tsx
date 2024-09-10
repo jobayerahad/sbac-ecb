@@ -5,8 +5,10 @@ import { useSearchParams } from 'next/navigation'
 import {
   Alert,
   Avatar,
+  Badge,
   Container,
   Group,
+  Image,
   Pagination,
   Paper,
   Select,
@@ -80,9 +82,9 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
                 { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
                 index: number
               ) => (
-                <Paper p="sm" key={index} shadow="xs">
+                <Paper pt={8} pb="sm" px="sm" key={index} shadow="xs" pos="relative">
                   <Group justify="center">
-                    <Avatar src={avatar} alt={name} size={100} />
+                    <Image src={avatar} alt={name} radius="md" w="auto" h={100} />
                   </Group>
 
                   <Title order={4} ta="center" size="xs" mt={12}>
@@ -118,6 +120,20 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
                     <EmailIcon size={12} />
                     <Text size="xs">{email || 'Not provided'}</Text>
                   </Group>
+
+                  {/* {empId === 1159 && (
+                    <Badge
+                      tt="capitalize"
+                      fw="normal"
+                      variant="filled"
+                      color="orange"
+                      pos="absolute"
+                      top="0.5rem"
+                      right="0.5rem"
+                    >
+                      On Leave
+                    </Badge>
+                  )} */}
                 </Paper>
               )
             )}
