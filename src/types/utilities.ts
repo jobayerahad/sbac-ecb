@@ -8,3 +8,13 @@ export type TPaginatedRes<T> = {
     hasPrevPage: boolean
   }
 }
+
+export type MenuItem = {
+  value: string
+  label: string
+}
+
+export type GroupMenuItem = {
+  group: string
+  items: MenuItem[]
+}

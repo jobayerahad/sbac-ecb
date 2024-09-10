@@ -11,7 +11,7 @@ import '@mantine/notifications/styles.css'
 import './globals.css'
 
 import { theme } from '@config/theme'
-import Structure from '@components/structure'
+import Structure from './_structure/main'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ecb.sbacbank.com'),
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     'SBAC EmpDirectory: A tool for SBAC Bank employees to easily find and connect with colleagues across all departments, fostering collaboration. Start using SBAC EmpDirectory today!',
   authors: [{ name: 'Jobayer Al Mahmud Ahad', url: 'https://www.jobayerahad.com' }],
-  publisher: 'SBAC Bank'
+  publisher: 'SBAC Bank PLC'
 }
 
 const work_sans = Work_Sans({

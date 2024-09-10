@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import {
@@ -30,18 +30,27 @@ const StructureShell = ({ children }: Props) => {
   const { setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true })
   const { data: ip } = useIpAddressData()
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <>
       <Group component="header" justify="space-between" px="md" py={12} m="xs" className="header">
-        <Link href="/">
-          <Image
-            w="auto"
-            h={48}
-            src={computedColorScheme === 'light' ? '/logo-full.png' : '/logo-white.png'}
-            alt="SBAC Logo"
-          />
-        </Link>
+        {isClient ? (
+          <Link href="/">
+            <Image
+              w="auto"
+              h={48}
+              src={computedColorScheme === 'light' ? '/logo-full.png' : '/logo-white.png'}
+              alt="SBAC Logo"
+            />
+          </Link>
+        ) : (
+          <div></div>
+        )}
 
         <div>
           <Title size={22} ta="center">
@@ -75,13 +84,17 @@ const StructureShell = ({ children }: Props) => {
             </>
           )}
 
-          <ActionIcon
-            variant="light"
-            aria-label="color-theme"
-            onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-          >
-            {computedColorScheme === 'light' ? <DarkIcon /> : <LightIcon />}
-          </ActionIcon>
+          {isClient ? (
+            <ActionIcon
+              variant="light"
+              aria-label="color-theme"
+              onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+            >
+              {computedColorScheme === 'light' ? <DarkIcon /> : <LightIcon />}
+            </ActionIcon>
+          ) : (
+            <div></div>
+          )}
         </Group>
       </Group>
 

@@ -17,7 +17,7 @@ import { RmReportProps } from '@types'
 const RmReportUI = () => {
   const { data, mutate, isPending, status } = useRmReportData()
 
-  const { onSubmit, getInputProps, reset } = useForm<RmReportProps>({
+  const { onSubmit, getInputProps } = useForm<RmReportProps>({
     initialValues: {
       empId: undefined,
       startDate: null,
@@ -32,11 +32,10 @@ const RmReportUI = () => {
       start_date: formatDate(val.startDate),
       end_date: formatDate(val.endDate)
     })
-    // reset()
   }
 
   return (
-    <Container size="lg">
+    <Container size="xl">
       <form onSubmit={onSubmit(submitHandler)}>
         <Group align="flex-end">
           <NumberInput
@@ -83,7 +82,7 @@ const RmReportUI = () => {
         </Group>
       </form>
 
-      {status === 'success' && <RmTable data={data} />}
+      {status === 'success' && data && <RmTable data={data} />}
     </Container>
   )
 }

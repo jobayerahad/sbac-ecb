@@ -7,7 +7,7 @@ import { capWords } from '@utils/helpers.utils'
 const toWords = new ToWords({ localeCode: 'en-BD' })
 
 const RmTable = ({ data }: { data: AccountInfo[] }) => (
-  <Paper shadow="xs" p="md" mt="md" mah="calc(100vh - 5rem)" style={{ overflowY: 'auto' }}>
+  <Paper shadow="xs" p="md" mt="md" mah="calc(100vh - 15rem)" style={{ overflowY: 'auto' }}>
     <Text size="sm">
       <strong>Employee ID:</strong> {data[0]?.empId}
     </Text>

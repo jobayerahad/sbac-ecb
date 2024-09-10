@@ -24,10 +24,10 @@ import { MdErrorOutline as ErrorIcon } from 'react-icons/md'
 
 import useNavigation from '@hooks/useNavigation'
 import { capWords } from '@utils/helpers.utils'
-import { TEmployee, TPaginatedRes } from '@types'
+import { GroupMenuItem, TEmployee, TPaginatedRes } from '@types'
 
 type Props = {
-  locations: any
+  locations: GroupMenuItem[]
   data: TPaginatedRes<TEmployee>
 }
 
@@ -48,7 +48,7 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
 
   useEffect(() => {
     navigate('search', search)
-  }, [search, navigate])
+  }, [search])
 
   return (
     <Container size="xl" mt="md">
@@ -70,7 +70,7 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
               onChange={(event) => setInterSearch(event.currentTarget.value)}
               leftSection={<SearchIcon />}
               data-autofocus
-              miw="33.3%"
+              miw="25%"
             />
           </Group>
 
