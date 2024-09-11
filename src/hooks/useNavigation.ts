@@ -1,20 +1,25 @@
 import { useCallback } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-import { getQueryString } from '@utils/helpers.utils'
-
 const useNavigation = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()!
 
   const createQueryString = useCallback(
-    (name: string, value: string) => getQueryString(searchParams, name, value),
+    (params: { [key: string]: string }) => {
+      const newSearchParams = new URLSearchParams(searchParams)
+      Object.entries(params).forEach(([key, value]) => {
+        if (value) newSearchParams.set(key, value)
+        else newSearchParams.delete(key)
+      })
+      return newSearchParams.toString()
+    },
     [searchParams]
   )
 
-  const navigate = (name: string, value: string) => {
-    router.push(pathname + '?' + createQueryString(name, value))
+  const navigate = (params: { [key: string]: string }) => {
+    router.push(pathname + '?' + createQueryString(params))
   }
 
   return { navigate }

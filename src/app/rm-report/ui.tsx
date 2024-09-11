@@ -1,21 +1,25 @@
 'use client'
 
+import { useState, useTransition } from 'react'
 import { Button, Container, Group, NumberInput } from '@mantine/core'
 import { useForm, yupResolver } from '@mantine/form'
 import { DatePickerInput } from '@mantine/dates'
+import { showNotification } from '@mantine/notifications'
 
 import { AiOutlineEnter as SubmitIcon } from 'react-icons/ai'
 import { BsCalendarDate as DateIcon } from 'react-icons/bs'
 import { HiOutlineIdentification as IdIcon } from 'react-icons/hi'
 
 import RmTable from './table'
-import { useRmReportData } from '@global-states/rm-report'
+import { getRmReport } from '@actions/employees'
 import { rmReportSchema } from '@schemas/rm-report.schema'
 import { formatDate } from '@utils/helpers.utils'
+import { getMessage } from '@utils/notification'
 import { RmReportProps } from '@types'
 
 const RmReportUI = () => {
-  const { data, mutate, isPending, status } = useRmReportData()
+  const [data, setData] = useState()
+  const [isLoading, startTransition] = useTransition()
 
   const { onSubmit, getInputProps } = useForm<RmReportProps>({
     initialValues: {
@@ -26,13 +30,17 @@ const RmReportUI = () => {
     validate: yupResolver(rmReportSchema)
   })
 
-  const submitHandler = async (val: RmReportProps) => {
-    mutate({
-      emp_id: Number(val.empId),
-      start_date: formatDate(val.startDate),
-      end_date: formatDate(val.endDate)
+  const submitHandler = (val: RmReportProps) =>
+    startTransition(async () => {
+      const res = await getRmReport({
+        emp_id: Number(val.empId),
+        start_date: formatDate(val.startDate),
+        end_date: formatDate(val.endDate)
+      })
+
+      setData(res.data)
+      showNotification(getMessage(res))
     })
-  }
 
   return (
     <Container size="xl">
@@ -76,13 +84,13 @@ const RmReportUI = () => {
             {...getInputProps('endDate')}
           />
 
-          <Button type="submit" size="sm" leftSection={<SubmitIcon size="1.1rem" />} loading={isPending} mt="md">
+          <Button type="submit" size="sm" leftSection={<SubmitIcon size="1.1rem" />} loading={isLoading} mt="md">
             Submit
           </Button>
         </Group>
       </form>
 
-      {status === 'success' && data && <RmTable data={data} />}
+      {data && <RmTable data={data} />}
     </Container>
   )
 }

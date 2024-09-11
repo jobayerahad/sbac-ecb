@@ -12,7 +12,7 @@ const RmTable = ({ data }: { data: AccountInfo[] }) => (
       <strong>Employee ID:</strong> {data[0]?.empId}
     </Text>
     <Text size="sm">
-      <strong>Employee Name:</strong> {data[0]?.rmName}
+      <strong>Employee Name:</strong> {capWords(data[0]?.rmName)}
     </Text>
     <Text size="sm">
       <strong>RM ID:</strong> {data[0]?.rmId}

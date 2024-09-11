@@ -15,26 +15,3 @@ export const capitalizeString = (str: string): string => {
 export const capWords = (str: string) => str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())
 
 export const formatDate = (date: Date | null) => dayjs(date).format('MM/DD/YYYY')
-export const formatDateView = (date: Date | null) => dayjs(date).format('Do MMM, YYYY')
-
-export const sanitizeTableData = (data: Record<string, any>[] | null | undefined) => {
-  if (!Array.isArray(data)) throw new Error('Expected an array of objects as input.')
-
-  return (
-    data?.map((row) => {
-      const newRow: Record<string, any> = {}
-
-      Object.keys(row).forEach((column) => {
-        newRow[column] = typeof row[column] === 'number' ? row[column].toString() : row[column]
-      })
-
-      return newRow
-    }) ?? []
-  )
-}
-
-export const getQueryString = (searchParams: URLSearchParams, name: string, value: string): string => {
-  const params = new URLSearchParams(searchParams)
-  params.set(name, value)
-  return params.toString()
-}

@@ -1,14 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import {
+  ActionIcon,
   Alert,
   Avatar,
-  Badge,
   Container,
   Group,
-  Image,
   Pagination,
   Paper,
   Select,
@@ -17,16 +17,18 @@ import {
   TextInput,
   Title
 } from '@mantine/core'
-import { useDebouncedValue } from '@mantine/hooks'
+import { useDebouncedState } from '@mantine/hooks'
+import { modals } from '@mantine/modals'
 
 import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail as EmailIcon } from 'react-icons/md'
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
-import { MdErrorOutline as ErrorIcon } from 'react-icons/md'
+import { MdErrorOutline as ErrorIcon, MdEdit as EditIcon } from 'react-icons/md'
 
+import EditEmployee from './edit-emp'
 import useNavigation from '@hooks/useNavigation'
 import { capWords } from '@utils/helpers.utils'
-import { GroupMenuItem, TEmployee, TPaginatedRes } from '@types'
+import { GroupMenuItem, TEmployee, TEmployeeForm, TPaginatedRes } from '@types'
 
 type Props = {
   locations: GroupMenuItem[]
@@ -36,20 +38,26 @@ type Props = {
 const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) => {
   const searchParams = useSearchParams()!
   const { navigate } = useNavigation()
+  const { status } = useSession()
+  const [search, setSearch] = useDebouncedState(searchParams.get('search') || '', 400)
 
   const page = Number(searchParams.get('page')) || 1
   const limit = searchParams.get('limit') || '8'
   const branch = searchParams.get('branch') || ''
 
-  const handlePageChange = (val: number) => navigate('page', val.toString())
-  const handleLimitChange = (val: string | null) => navigate('limit', val!)
-  const handleBranchChange = (val: string | null) => navigate('branch', val || '')
+  const handlePageChange = (val: number) => navigate({ page: val.toString() })
+  const handleLimitChange = (val: string | null) => navigate({ limit: val! })
+  const handleBranchChange = (val: string | null) => navigate({ branch: val || '' })
 
-  const [interSearch, setInterSearch] = useState('')
-  const [search] = useDebouncedValue(interSearch, 400)
+  const editHandler = (id: string, data: TEmployeeForm) =>
+    modals.open({
+      title: 'Update Employee Info',
+      children: <EditEmployee id={id} existing={data} />,
+      centered: true
+    })
 
   useEffect(() => {
-    navigate('search', search)
+    navigate({ search, page: '1' })
   }, [search])
 
   return (
@@ -63,28 +71,30 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
               value={branch}
               onChange={handleBranchChange}
               searchable
-              miw="25%"
+              clearable
+              w={300}
             />
 
             <TextInput
               placeholder="Search..."
-              value={interSearch}
-              onChange={(event) => setInterSearch(event.currentTarget.value)}
+              defaultValue={search}
+              onChange={(event) => setSearch(event.currentTarget.value)}
               leftSection={<SearchIcon />}
               data-autofocus
-              miw="25%"
+              w={300}
             />
           </Group>
 
           <SimpleGrid spacing="xs" cols={4}>
             {employees?.map(
               (
-                { avatar, name, designation, department, branch, empId, cellNo, phone, email }: TEmployee,
+                { avatar, name, designation, department, branch, empId, cellNo, phone, email, unit, _id }: TEmployee,
                 index: number
               ) => (
                 <Paper pt={8} pb="sm" px="sm" key={index} shadow="xs" pos="relative">
                   <Group justify="center">
-                    <Image src={avatar} alt={name} radius="md" w="auto" h={100} />
+                    {/* <Image src={avatar} alt={name} radius="md" w="auto" h={100} /> */}
+                    <Avatar src={avatar} alt={name} size={100} />
                   </Group>
 
                   <Title order={4} ta="center" size="xs" mt={12}>
@@ -93,6 +103,7 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
 
                   <Text size="xs" ta="center" mt={4}>
                     {designation}, {capWords(department)}
+                    {unit && `, ${unit}`}
                   </Text>
 
                   {branch && (
@@ -134,6 +145,19 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
                       On Leave
                     </Badge>
                   )} */}
+
+                  {status === 'authenticated' && (
+                    <ActionIcon
+                      variant="light"
+                      color="dark"
+                      pos="absolute"
+                      top="0.5rem"
+                      right="0.5rem"
+                      onClick={() => editHandler(_id, { cellNo, email, phone, unit })}
+                    >
+                      <EditIcon />
+                    </ActionIcon>
+                  )}
                 </Paper>
               )
             )}

@@ -6,7 +6,9 @@ import { convertLocationData } from '@utils/formatter.utils'
 
 export const getLocations = async (type: string): Promise<TLocation[] | null> => {
   try {
-    const { data } = await api().get(`/locations/type/${type}`)
+    const endPoint = await api()
+    const { data } = await endPoint.get(`/locations/type/${type}`)
+
     return data
   } catch (error) {
     return []
@@ -15,9 +17,10 @@ export const getLocations = async (type: string): Promise<TLocation[] | null> =>
 
 export const getBranches = async () => {
   try {
+    const endPoint = await api()
     const [{ data: branches }, { data: subBranches }] = await Promise.all([
-      api().get(`/locations/type/branch`),
-      api().get(`/locations/type/sub-branch`)
+      endPoint.get(`/locations/type/branch`),
+      endPoint.get(`/locations/type/sub-branch`)
     ])
 
     if (!branches || !subBranches) return []

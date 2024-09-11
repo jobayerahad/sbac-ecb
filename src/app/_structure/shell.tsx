@@ -63,10 +63,12 @@ const StructureShell = ({ children }: Props) => {
         </div>
 
         <Group>
-          {/* {status === 'unauthenticated' &&
-            ip?.startsWith('172.19.100.') &&
-            parseInt(ip?.split('.')[3]) >= 1 &&
-            parseInt(ip?.split('.')[3]) <= 254 && (
+          {status === 'unauthenticated' &&
+            (ip === '172.19.100.8' ||
+              ip === '172.19.100.40' ||
+              ip === '172.19.100.192' ||
+              ip === '172.19.100.206' ||
+              ip === '172.19.100.136') && (
               <Anchor component={Link} href="/login">
                 Login
               </Anchor>
@@ -74,15 +76,17 @@ const StructureShell = ({ children }: Props) => {
 
           {status === 'authenticated' && (
             <>
-              <Anchor component={Link} href="/rm-report">
-                RM Report
-              </Anchor>
+              {ip === '172.19.100.192' && (
+                <Anchor component={Link} href="/rm-report">
+                  RM Report
+                </Anchor>
+              )}
 
               <ActionIcon variant="outline" onClick={() => signOut()}>
                 <LogoutIcon />
               </ActionIcon>
             </>
-          )} */}
+          )}
 
           {isClient ? (
             <ActionIcon

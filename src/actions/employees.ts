@@ -1,36 +1,67 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 
 import api from '@utils/api'
-import { RmReportParams } from '@types'
-import { authOptions } from '@utils/authOptions'
+import { ActionRes, RmReportParams, TEmployeeForm } from '@types'
+import { StatusMsg } from '@config/strings'
+import { AxiosError } from 'axios'
 
-export const getRmReport = async (params: RmReportParams) => {
+export const getRmReport = async (params: RmReportParams): Promise<ActionRes> => {
   try {
-    const session = await getServerSession(authOptions)
+    const endPoint = await api()
+    const { data } = await endPoint.post('/cbs/rm-report', params)
 
-    const { data } = await api(session?.user.id).post('/cbs/rm-report', params)
-    return data
+    return {
+      status: StatusMsg.SUCCESS,
+      message: 'RM Report generated!',
+      data
+    }
   } catch (error) {
-    return null
+    return {
+      status: StatusMsg.BAD_REQUEST,
+      message: error instanceof AxiosError ? error.response?.data.message : 'An error occured'
+    }
+  }
+}
+
+export const updateEmployee = async (id: string, formData: TEmployeeForm): Promise<ActionRes> => {
+  try {
+    const endPoint = await api()
+    await endPoint.patch(`/employees/${id}`, formData)
+
+    revalidatePath('/')
+
+    return {
+      status: StatusMsg.SUCCESS,
+      message: 'Employee data updated successfully!'
+    }
+  } catch (error) {
+    return {
+      status: StatusMsg.BAD_REQUEST,
+      message: error instanceof AxiosError ? error.response?.data.message : 'An error occured'
+    }
   }
 }
 
 export const getEmployees = async (page = 1, limit = 8, search?: string, branch?: string) => {
   try {
-    const { data } = await api().get('/employees', { params: { page, limit, search, branch } })
+    const endPoint = await api()
+    const { data } = await endPoint.get('/employees', { params: { page, limit, search, branch } })
+
     return data
-  } catch (error) {
+  } catch (_) {
     return null
   }
 }
 
 export const getEmployee = async (emp_id: number) => {
   try {
-    const { data } = await api().get('/employees', { params: { emp_id } })
+    const endPoint = await api()
+    const { data } = await endPoint.get('/employees', { params: { emp_id } })
+
     return data
-  } catch (error) {
+  } catch (_) {
     return null
   }
 }

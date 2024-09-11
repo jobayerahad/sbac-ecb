@@ -1,32 +1,17 @@
 import { BiCheckCircle as SuccessIcon } from 'react-icons/bi'
 import { MdOutlineErrorOutline as ErrorIcon } from 'react-icons/md'
 
-export const getSuccessMessage = (message: string) => ({
-  title: 'Success',
-  icon: <SuccessIcon />,
-  message,
-  color: 'green'
-})
+import { StatusMsg } from '@config/strings'
+import { Message } from '@types'
 
-export const getErrorMessage = (error: any) => {
-  if (typeof error === 'string')
-    return {
-      title: 'Error',
-      icon: <ErrorIcon />,
-      message: error,
-      color: 'red'
-    }
-
-  const { response } = error
-  const { data } = response || {}
-  const { error: title = 'Error', message: errors } = data || {}
-
-  const message = typeof errors === 'string' ? errors : errors?.length > 0 ? errors.join('; ') : error?.message
-
-  return {
-    title,
-    icon: <ErrorIcon />,
-    message,
-    color: 'red'
-  }
+type Props = {
+  status: StatusMsg
+  message: string
 }
+
+export const getMessage = (obj: Props): Message => ({
+  title: obj.status,
+  icon: obj.status === StatusMsg.SUCCESS ? <SuccessIcon /> : <ErrorIcon />,
+  message: obj.message,
+  color: obj.status === StatusMsg.SUCCESS ? 'green' : 'red'
+})

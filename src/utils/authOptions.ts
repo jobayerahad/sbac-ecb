@@ -19,7 +19,8 @@ export const authOptions: NextAuthOptions = {
         const token = process.env.INTERBRIDGE_ACCESS_TOKEN
 
         try {
-          const { data } = await api().post(
+          const apiObj = await api()
+          const { data } = await apiObj.post(
             '/login',
             { clientId: credentials?.clientId, secretKey: credentials?.secretKey },
             { headers: { 'x-auth-token': token } }

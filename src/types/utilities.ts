@@ -1,3 +1,6 @@
+import { ReactNode } from 'react'
+import { StatusMsg } from '@config/strings'
+
 export type TPaginatedRes<T> = {
   employees: T[]
   pagination: {
@@ -17,4 +20,17 @@ export type MenuItem = {
 export type GroupMenuItem = {
   group: string
   items: MenuItem[]
+}
+
+export type ActionRes = {
+  status: StatusMsg
+  message: string
+  data?: any
+}
+
+export type Message = {
+  title: string
+  icon: ReactNode
+  message: string
+  color: string
 }
