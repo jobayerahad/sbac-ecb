@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useTransition } from 'react'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -15,19 +15,23 @@ import {
   SimpleGrid,
   Text,
   TextInput,
-  Title
+  Title,
+  Tooltip
 } from '@mantine/core'
 import { useDebouncedState } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
+import { showNotification } from '@mantine/notifications'
 
 import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail as EmailIcon } from 'react-icons/md'
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
-import { MdErrorOutline as ErrorIcon, MdEdit as EditIcon } from 'react-icons/md'
+import { MdErrorOutline as ErrorIcon, MdEdit as EditIcon, MdOutlineUpdate as UpdateIcon } from 'react-icons/md'
 
 import EditEmployee from './edit-emp'
 import useNavigation from '@hooks/useNavigation'
+import { updateEmployees } from '@actions/employees'
 import { capWords } from '@utils/helpers.utils'
+import { getMessage } from '@utils/notification'
 import { GroupMenuItem, TEmployee, TEmployeeForm, TPaginatedRes } from '@types'
 
 type Props = {
@@ -36,6 +40,7 @@ type Props = {
 }
 
 const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) => {
+  const [isLoading, startTransition] = useTransition()
   const searchParams = useSearchParams()!
   const { navigate } = useNavigation()
   const { status } = useSession()
@@ -54,6 +59,12 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
       title: 'Update Employee Info',
       children: <EditEmployee id={id} existing={data} />,
       centered: true
+    })
+
+  const updateHandler = () =>
+    startTransition(async () => {
+      const res = await updateEmployees()
+      showNotification(getMessage(res))
     })
 
   useEffect(() => {
@@ -75,14 +86,24 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
               w={300}
             />
 
-            <TextInput
-              placeholder="Search..."
-              defaultValue={search}
-              onChange={(event) => setSearch(event.currentTarget.value)}
-              leftSection={<SearchIcon />}
-              data-autofocus
-              w={300}
-            />
+            <Group gap="xs">
+              <TextInput
+                placeholder="Search..."
+                defaultValue={search}
+                onChange={(event) => setSearch(event.currentTarget.value)}
+                leftSection={<SearchIcon />}
+                data-autofocus
+                w={300}
+              />
+
+              {status === 'authenticated' && (
+                <Tooltip label="Update by HRBook" position="bottom" withArrow>
+                  <ActionIcon variant="outline" onClick={updateHandler} loading={isLoading}>
+                    <UpdateIcon />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+            </Group>
           </Group>
 
           <SimpleGrid spacing="xs" cols={4}>
@@ -102,7 +123,7 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
                   </Title>
 
                   <Text size="xs" ta="center" mt={4}>
-                    {designation}, {capWords(department)}
+                    {designation}, {capWords(department, ['ICT', 'ICC', 'AML', 'HR', 'MIS', 'CIB', "MD's"])}
                     {unit && `, ${unit}`}
                   </Text>
 
@@ -117,17 +138,17 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
                     <Text size="xs">Employee ID: {empId}</Text>
                   </Group>
 
-                  <Group mt={6} gap={8}>
+                  <Group mt={6} gap={8} wrap="nowrap">
                     <MobileIcon size={12} />
                     <Text size="xs">{cellNo || 'Not provided'}</Text>
                   </Group>
 
-                  <Group mt={6} gap={8}>
+                  <Group mt={6} gap={8} wrap="nowrap">
                     <PhoneIcon size={12} />
                     <Text size="xs">{phone || 'Not provided'}</Text>
                   </Group>
 
-                  <Group mt={6} gap={8}>
+                  <Group mt={6} gap={8} wrap="nowrap">
                     <EmailIcon size={12} />
                     <Text size="xs">{email || 'Not provided'}</Text>
                   </Group>

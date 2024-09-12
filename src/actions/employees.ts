@@ -44,6 +44,25 @@ export const updateEmployee = async (id: string, formData: TEmployeeForm): Promi
   }
 }
 
+export const updateEmployees = async (): Promise<ActionRes> => {
+  try {
+    const endPoint = await api()
+    const { data } = await endPoint.get('/employees/update-db')
+
+    revalidatePath('/')
+
+    return {
+      status: StatusMsg.SUCCESS,
+      message: data.message
+    }
+  } catch (error) {
+    return {
+      status: StatusMsg.BAD_REQUEST,
+      message: error instanceof AxiosError ? error.response?.data.message : 'An error occured'
+    }
+  }
+}
+
 export const getEmployees = async (page = 1, limit = 8, search?: string, branch?: string) => {
   try {
     const endPoint = await api()
