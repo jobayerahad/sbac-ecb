@@ -14,12 +14,13 @@ type Props = {
     limit: number
     search?: string
     branch?: string
+    division?: string
   }
 }
 
-const Home = async ({ searchParams: { page, limit, search, branch } }: Props) => {
+const Home = async ({ searchParams: { page, limit, search, branch, division } }: Props) => {
   const locations = await getBranches()
-  const data = await getEmployees(page, limit, search, branch)
+  const data = await getEmployees(page, limit, search, branch, division)
 
   return <ContactBookUI locations={locations} data={data} />
 }

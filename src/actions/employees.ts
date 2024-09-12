@@ -63,14 +63,14 @@ export const updateEmployees = async (): Promise<ActionRes> => {
   }
 }
 
-export const getEmployees = async (page = 1, limit = 8, search?: string, branch?: string) => {
+export const getEmployees = async (page = 1, limit = 8, search?: string, branch?: string, division?: string) => {
   try {
     const endPoint = await api()
-    const { data } = await endPoint.get('/employees', { params: { page, limit, search, branch } })
+    const { data } = await endPoint.get('/employees', { params: { page, limit, search, branch, division } })
 
     return data
   } catch (_) {
-    return null
+    return []
   }
 }
 

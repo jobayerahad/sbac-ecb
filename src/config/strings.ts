@@ -13,3 +13,36 @@ export enum StatusMsg {
   SUCCESS = 'Success',
   UNAUTHORIZED = 'Unauthorized'
 }
+
+export const divisions = [
+  'AML Division',
+  'Agent Banking Division',
+  'Banking Operation Division',
+  'Board Division',
+  'Business Development Division',
+  'Card Division',
+  "Chairman's Secretariat",
+  "MD'S Secretariat",
+  "DMD'S Secretariat",
+  'Credit Administrator Division',
+  'Credit Division',
+  'Corporate Banking Division',
+  'Financial Administrator Division',
+  'General Services Division',
+  'HR Attachment',
+  'Human Resources Division',
+  'ICC Division',
+  'ICT Division',
+  'International Division',
+  'Islamic Banking Division',
+  'Legal Affairs & Recovery Division',
+  'MIS & CIB Division',
+  'Public Relation Division',
+  'Risk Management Division',
+  'SBAC Bank Investment',
+  'SENIOR Management',
+  'Training Institute',
+  'Tresury Division',
+  'Trade Processing Unit',
+  'Others'
+]

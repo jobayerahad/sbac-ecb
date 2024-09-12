@@ -30,6 +30,7 @@ import { MdErrorOutline as ErrorIcon, MdEdit as EditIcon, MdOutlineUpdate as Upd
 import EditEmployee from './edit-emp'
 import useNavigation from '@hooks/useNavigation'
 import { updateEmployees } from '@actions/employees'
+import { divisions } from '@config/strings'
 import { capWords } from '@utils/helpers.utils'
 import { getMessage } from '@utils/notification'
 import { GroupMenuItem, TEmployee, TEmployeeForm, TPaginatedRes } from '@types'
@@ -49,10 +50,12 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
   const page = Number(searchParams.get('page')) || 1
   const limit = searchParams.get('limit') || '8'
   const branch = searchParams.get('branch') || ''
+  const division = searchParams.get('division') || ''
 
   const handlePageChange = (val: number) => navigate({ page: val.toString() })
   const handleLimitChange = (val: string | null) => navigate({ limit: val! })
   const handleBranchChange = (val: string | null) => navigate({ branch: val || '' })
+  const handleDivisionChange = (val: string | null) => navigate({ division: val || '' })
 
   const editHandler = (id: string, data: TEmployeeForm) =>
     modals.open({
@@ -71,20 +74,42 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
     navigate({ search, page: '1' })
   }, [search])
 
+  useEffect(() => {
+    navigate({ page: '1' })
+  }, [branch])
+
+  useEffect(() => {
+    navigate({ page: '1' })
+  }, [division])
+
   return (
     <Container size="xl" mt="md">
       {employees ? (
         <>
           <Group justify="space-between" mb="sm">
-            <Select
-              placeholder="Branch/Sub-Branch"
-              data={locations || []}
-              value={branch}
-              onChange={handleBranchChange}
-              searchable
-              clearable
-              w={300}
-            />
+            <Group gap="xs">
+              <Select
+                placeholder="Branch/Sub-Branch"
+                data={locations || []}
+                value={branch}
+                onChange={handleBranchChange}
+                searchable
+                clearable
+                w={300}
+              />
+
+              {branch === '0001' && (
+                <Select
+                  placeholder="Select Division"
+                  data={divisions}
+                  value={division}
+                  onChange={handleDivisionChange}
+                  searchable
+                  clearable
+                  w={300}
+                />
+              )}
+            </Group>
 
             <Group gap="xs">
               <TextInput
