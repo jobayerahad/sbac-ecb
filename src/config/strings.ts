@@ -27,6 +27,7 @@ export const divisions = [
   'Credit Administrator Division',
   'Credit Division',
   'Corporate Banking Division',
+  'Digital Financial Inclusion Division',
   'Financial Administrator Division',
   'General Services Division',
   'HR Attachment',
@@ -40,9 +41,10 @@ export const divisions = [
   'Public Relation Division',
   'Risk Management Division',
   'SBAC Bank Investment',
-  'SENIOR Management',
+  'Senior Management',
   'Training Institute',
-  'Tresury Division',
+  'Treasury Division',
   'Trade Processing Unit',
+  'Zonal Office',
   'Others'
 ]

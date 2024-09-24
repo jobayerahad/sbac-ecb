@@ -84,6 +84,10 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
 
   return (
     <Container size="xl" mt="md">
+      <Text size="xs" ta="center" mb="xs">
+        Note: This directory is sorted by Employee ID in ascending order. For employees with the same designation, those
+        with lower Employee IDs will appear first.
+      </Text>
       {employees ? (
         <>
           <Group justify="space-between" mb="sm">
