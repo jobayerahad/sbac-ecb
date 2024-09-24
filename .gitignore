@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# Public
+/public/*.exe
+/public/**/*.exe
+
 # testing
 /coverage
 

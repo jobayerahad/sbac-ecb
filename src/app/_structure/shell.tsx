@@ -104,13 +104,25 @@ const StructureShell = ({ children }: Props) => {
 
       <Box mih="calc(100vh - 10rem)">{children}</Box>
 
-      <Text size="xs" component="footer" p="xs" ta="center">
-        &copy; 2013 - {new Date().getFullYear()}{' '}
-        <Anchor component={Link} href="https://www.sbacbank.com" c="inherit">
-          SBAC Bank PLC
+      <Group component="footer" gap={4} justify="center" p="xs">
+        <Anchor component={Link} href="/downloads" size="xs" c="inherit">
+          Downloads
         </Anchor>
-        . All rights reserved.
-      </Text>
+
+        <Group gap={8} justify="center">
+          <Text size="xs" component="footer">
+            | &copy; 2013 - {new Date().getFullYear()}
+          </Text>
+
+          <Anchor href="https://www.sbacbank.com" size="xs" c="inherit">
+            SBAC Bank PLC.
+          </Anchor>
+
+          <Text size="xs" component="footer">
+            All rights reserved.
+          </Text>
+        </Group>
+      </Group>
     </>
   )
 }
