@@ -2,7 +2,7 @@ import { useTransition } from 'react'
 import { useForm } from '@mantine/form'
 import { closeAllModals } from '@mantine/modals'
 import { showNotification } from '@mantine/notifications'
-import { FaSave as SaveIcon } from 'react-icons/fa'
+import { MdOutlineUpdate as UpdateIcon } from 'react-icons/md'
 
 import { StatusMsg } from '@config/strings'
 import { getMessage } from '@utils/notification'
@@ -45,8 +45,8 @@ const EditEmployee = ({ id, existing }: Props) => {
 
       <TextInput label="Enter Unit" placeholder="Enter unit name (if any)" mb="md" {...getInputProps('unit')} />
 
-      <Button type="submit" size="sm" leftSection={<SaveIcon />} loading={isLoading}>
-        Save
+      <Button type="submit" size="sm" leftSection={<UpdateIcon />} loading={isLoading}>
+        Update
       </Button>
     </form>
   )

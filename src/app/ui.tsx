@@ -22,10 +22,16 @@ import { useDebouncedState } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { showNotification } from '@mantine/notifications'
 
-import { MdLocalPhone as PhoneIcon, MdPermIdentity as IdIcon, MdAlternateEmail as EmailIcon } from 'react-icons/md'
+import {
+  MdLocalPhone as PhoneIcon,
+  MdPermIdentity as IdIcon,
+  MdAlternateEmail as EmailIcon,
+  MdErrorOutline as ErrorIcon,
+  MdEdit as EditIcon,
+  MdOutlineUpdate as UpdateIcon
+} from 'react-icons/md'
 import { FaMobileAlt as MobileIcon } from 'react-icons/fa'
 import { IoSearch as SearchIcon } from 'react-icons/io5'
-import { MdErrorOutline as ErrorIcon, MdEdit as EditIcon, MdOutlineUpdate as UpdateIcon } from 'react-icons/md'
 
 import EditEmployee from './edit-emp'
 import useNavigation from '@hooks/useNavigation'
@@ -137,18 +143,15 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
 
           <SimpleGrid spacing="xs" cols={4}>
             {employees?.map(
-              (
-                { avatar, name, designation, department, branch, empId, cellNo, phone, email, unit, _id }: TEmployee,
-                index: number
-              ) => (
-                <Paper pt={8} pb="sm" px="sm" key={index} shadow="xs" pos="relative">
+              ({ avatar, name, designation, department, branch, empId, cellNo, phone, email, unit, _id }, index) => (
+                <Paper pt={8} pb="sm" px="sm" key={index} shadow="xs" className="person-card">
                   <Group justify="center">
                     {/* <Image src={avatar} alt={name} radius="md" w="auto" h={100} /> */}
                     <Avatar src={avatar} alt={name} size={100} />
                   </Group>
 
-                  <Title order={4} ta="center" size="xs" mt={12}>
-                    {capWords(name)}
+                  <Title order={4} ta="center" size="md" mt={12}>
+                    {capWords(name, ['FCS'])}
                   </Title>
 
                   <Text size="xs" ta="center" mt={4}>
@@ -198,11 +201,8 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
 
                   {status === 'authenticated' && (
                     <ActionIcon
-                      variant="light"
-                      color="dark"
-                      pos="absolute"
-                      top="0.5rem"
-                      right="0.5rem"
+                      variant="gradient"
+                      className="edit-btn"
                       onClick={() => editHandler(_id, { cellNo, email, phone, unit })}
                     >
                       <EditIcon />

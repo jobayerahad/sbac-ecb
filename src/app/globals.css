@@ -4,16 +4,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: light-dark(#DEE2E6, #5C5F66);
+  background: light-dark(#dee2e6, #5c5f66);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background: light-dark(#A6A7AB, #ADB5BD);
+  background: light-dark(#a6a7ab, #adb5bd);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: light-dark(#909296, #868E96);
+  background: light-dark(#909296, #868e96);
 }
 
 body {
@@ -27,5 +27,23 @@ body {
   backdrop-filter: blur(10px);
   z-index: 10;
   position: sticky;
-  top: var(--mantine-spacing-xs)
+  top: var(--mantine-spacing-xs);
+}
+
+.person-card {
+  position: relative;
+}
+
+.edit-btn {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  transition: 0.25s;
+}
+
+.person-card:hover .edit-btn {
+  visibility: visible;
+  opacity: 1;
 }
