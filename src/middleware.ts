@@ -7,5 +7,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: '/((?!static|.*\\..*|_next|downloads$|$).*)'
+  matcher: '/((?!static|.*\\..*|_next|downloads$|rm-report$|$).*)'
 }

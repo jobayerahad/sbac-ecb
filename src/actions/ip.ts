@@ -2,7 +2,7 @@
 
 import { headers } from 'next/headers'
 
-export const getIP = () => {
+export const getIP = async () => {
   const FALLBACK_IP_ADDRESS = '0.0.0.0'
   const forwardedFor = headers().get('x-forwarded-for')
 
