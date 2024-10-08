@@ -68,6 +68,7 @@ const StructureShell = ({ children }: Props) => {
               ip === '172.19.100.40' ||
               ip === '172.19.100.192' ||
               ip === '172.19.100.206' ||
+              ip === '172.19.100.125' ||
               ip === '172.19.100.136') && (
               <Anchor component={Link} href="/sign-in">
                 Login
