@@ -3,24 +3,18 @@ import type { Metadata } from 'next'
 import ContactBookUI from './ui'
 import { getBranches } from '@actions/locations'
 import { getEmployees } from '@actions/employees'
+import { TEmployeeParams } from '@types'
 
 export const metadata: Metadata = {
-  title: 'SBAC EmpDirectory - Find, Connect, Collaborate'
+  title: 'Employee Directory - Find, Connect, Collaborate'
 }
 
-type Props = {
-  searchParams: {
-    page: number
-    limit: number
-    search?: string
-    branch?: string
-    division?: string
-  }
-}
+type SearchParams = Promise<TEmployeeParams>
 
-const Home = async ({ searchParams: { page, limit, search, branch, division } }: Props) => {
-  const locations = await getBranches()
-  const data = await getEmployees(page, limit, search, branch, division)
+const Home = async (props: { searchParams: SearchParams }) => {
+  const searchParams = await props.searchParams
+
+  const [locations, data] = await Promise.all([getBranches(), getEmployees(searchParams)])
 
   return <ContactBookUI locations={locations} data={data} />
 }

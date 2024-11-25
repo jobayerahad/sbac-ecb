@@ -38,7 +38,7 @@ const RmTable = ({ data }: { data: AccountInfo[] }) => (
             <Table.Td>{accountno}</Table.Td>
             <Table.Td>{capWords(accountName)}</Table.Td>
             <Table.Td>{glHead}</Table.Td>
-            <Table.Td>{new Date(openDate || '').toLocaleString('en-US', { dateStyle: 'long' })}</Table.Td>
+            <Table.Td>{new Date(openDate || '').toLocaleString('en-US', { dateStyle: 'medium' })}</Table.Td>
             <Table.Td>{status.toLocaleLowerCase()}</Table.Td>
             <Table.Td>{balance?.toLocaleString('en-IN', { style: 'currency', currency: 'BDT' })}</Table.Td>
           </Table.Tr>

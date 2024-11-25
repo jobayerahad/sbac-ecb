@@ -25,3 +25,11 @@ export type TEmployeeForm = {
   cellNo: string
   unit: string
 }
+
+export type TEmployeeParams = {
+  page: number
+  limit: number
+  search: string
+  branch: string
+  division: string
+}

@@ -1,11 +1,11 @@
 'use server'
 
+import { AxiosError } from 'axios'
 import { revalidatePath } from 'next/cache'
 
 import api from '@utils/api'
-import { ActionRes, RmReportParams, TEmployeeForm } from '@types'
 import { StatusMsg } from '@config/strings'
-import { AxiosError } from 'axios'
+import { ActionRes, RmReportParams, TEmployeeForm, TEmployeeParams } from '@types'
 
 export const getRmReport = async (params: RmReportParams): Promise<ActionRes> => {
   try {
@@ -63,10 +63,12 @@ export const updateEmployees = async (): Promise<ActionRes> => {
   }
 }
 
-export const getEmployees = async (page = 1, limit = 8, search?: string, branch?: string, division?: string) => {
+export const getEmployees = async (params: TEmployeeParams) => {
+  const limit = params.limit || 8
+
   try {
     const endPoint = await api()
-    const { data } = await endPoint.get('/employees', { params: { page, limit, search, branch, division } })
+    const { data } = await endPoint.get('/employees', { params: { ...params, limit } })
 
     return data
   } catch (_) {

@@ -1,8 +1,8 @@
 'use server'
 
 import api from '@utils/api'
-import { TLocation } from '@types'
 import { convertLocationData } from '@utils/formatter.utils'
+import { TLocation } from '@types'
 
 export const getLocations = async (type: string): Promise<TLocation[] | null> => {
   try {

@@ -1,12 +1,27 @@
 'use server'
 
 import { headers } from 'next/headers'
+import os from 'os'
+
+const getSystemIPAddress = () => {
+  const interfaces = os.networkInterfaces()
+
+  for (const name of Object.keys(interfaces)) {
+    const iface = interfaces[name]
+    if (iface) for (const net of iface) if (net.family === 'IPv4' && !net.internal) return net.address // Skip over non-IPv4 and internal (i.e., 127.0.0.1 and ::1) addresses
+  }
+
+  return '0.0.0.0' // Fallback if no external IPv4 address is found
+}
 
 export const getIP = async () => {
   const FALLBACK_IP_ADDRESS = '0.0.0.0'
-  const forwardedFor = headers().get('x-forwarded-for')
+  const headersList = await headers()
+  const forwardedFor = headersList.get('x-forwarded-for')
 
-  if (forwardedFor) return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
+  let ip = forwardedFor ? forwardedFor.split(',')[0] : headersList.get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 
-  return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
+  if (ip === '::1') ip = getSystemIPAddress()
+
+  return ip
 }

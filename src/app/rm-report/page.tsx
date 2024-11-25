@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 const RmReport = async () => {
   const ip = await getIP()
-  const isItd = ip?.startsWith('172.19.100.') || '::1'
+  const allowedIpRange = ip?.startsWith('172.19.100.') || ip?.startsWith('172.19.96.') || '::1'
 
-  if (!isItd) notFound()
+  if (!allowedIpRange) notFound()
   return <RmReportUI />
 }
 
