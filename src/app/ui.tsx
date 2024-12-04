@@ -155,7 +155,8 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
                   </Title>
 
                   <Text size="xs" ta="center" mt={4}>
-                    {designation}, {capWords(department, ['ICT', 'ICC', 'AML', 'HR', 'MIS', 'CIB', "MD's"])}
+                    {designation},{' '}
+                    {capWords(department, ['ICT', 'ICC', 'AML', 'HR', 'MIS', 'CIB', "MD's", "DMD's", "AMD's"])}
                     {unit && `, ${unit}`}
                   </Text>
 
