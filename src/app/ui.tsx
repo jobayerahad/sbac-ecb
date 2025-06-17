@@ -77,15 +77,16 @@ const ContactBookUI = ({ locations, data: { employees, pagination } }: Props) =>
     })
 
   useEffect(() => {
-    navigate({ search, page: '1' })
+    const currentSearch = searchParams.get('search') || ''
+    if (search !== currentSearch) navigate({ search, page: '1' })
   }, [search])
 
   useEffect(() => {
-    navigate({ page: '1' })
+    if (branch) navigate({ page: '1' })
   }, [branch])
 
   useEffect(() => {
-    navigate({ page: '1' })
+    if (division) navigate({ page: '1' })
   }, [division])
 
   return (
