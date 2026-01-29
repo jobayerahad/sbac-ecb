@@ -1,14 +1,14 @@
 import { useTransition } from 'react'
+import { Button, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals } from '@mantine/modals'
 import { showNotification } from '@mantine/notifications'
 import { MdOutlineUpdate as UpdateIcon } from 'react-icons/md'
 
+import { updateEmployee } from '@actions/employees'
 import { StatusMsg } from '@config/strings'
 import { getMessage } from '@utils/notification'
 import { TEmployeeForm } from '@types'
-import { updateEmployee } from '@actions/employees'
-import { Button, TextInput } from '@mantine/core'
 
 type Props = {
   id: string
