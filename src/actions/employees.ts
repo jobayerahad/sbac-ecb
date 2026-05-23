@@ -3,7 +3,7 @@
 import { AxiosError } from 'axios'
 import { revalidatePath } from 'next/cache'
 
-import api from '@utils/api'
+import api from '@lib/api'
 import { StatusMsg } from '@config/strings'
 import { ActionRes, RmReportParams, TEmployeeForm, TEmployeeParams } from '@types'
 
@@ -71,7 +71,7 @@ export const getEmployees = async (params: TEmployeeParams) => {
     const { data } = await endPoint.get('/employees', { params: { ...params, limit } })
 
     return data
-  } catch (_) {
+  } catch (e) {
     return []
   }
 }

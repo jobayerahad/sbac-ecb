@@ -1,10 +1,7 @@
-import { withAuth } from 'next-auth/middleware'
+// proxy.ts
+import { auth } from './auth'
 
-export default withAuth({
-  pages: {
-    signIn: '/sign-in'
-  }
-})
+export default auth
 
 export const config = {
   matcher: '/((?!static|.*\\..*|_next|downloads$|rm-report$|$).*)'

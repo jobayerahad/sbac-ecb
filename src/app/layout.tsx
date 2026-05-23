@@ -38,12 +38,12 @@ const lora = Lora({
 })
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
-  <html lang="en" className={clsx(work_sans.variable, lora.variable)}>
+  <html lang="en" className={clsx(work_sans.variable, lora.variable)} suppressHydrationWarning>
     <head>
       <ColorSchemeScript defaultColorScheme="auto" />
     </head>
 
-    <body suppressHydrationWarning>
+    <body>
       <MantineProvider theme={theme} defaultColorScheme="auto" classNamesPrefix="sbac">
         <Notifications />
 

@@ -54,10 +54,12 @@ const RmTable = ({ data }: { data: AccountInfo[] }) => (
               .reduce((totalBalance, currentItem) => totalBalance + currentItem.balance, 0)
               .toLocaleString('en-IN', { style: 'currency', currency: 'BDT' })}
             <Text size="xs">
+              (
               {toWords.convert(
                 data.reduce((totalBalance, currentItem) => totalBalance + currentItem.balance, 0),
                 { currency: true }
               )}
+              )
             </Text>
           </Table.Th>
         </Table.Tr>

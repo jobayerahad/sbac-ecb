@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { PasswordInput, Button, Title, Text, TextInput } from '@mantine/core'
-import { useForm, yupResolver } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { showNotification } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
 
@@ -20,7 +20,7 @@ const SignInUI = () => {
   const { refresh } = useRouter()
 
   const { onSubmit, getInputProps } = useForm<LoginForm>({
-    validate: yupResolver(signInSchema),
+    validate: schemaResolver(signInSchema),
     initialValues: {
       clientId: '',
       secretKey: ''

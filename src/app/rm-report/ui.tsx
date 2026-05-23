@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { ActionIcon, Button, Container, Group, NumberInput, Tooltip } from '@mantine/core'
-import { useForm, yupResolver } from '@mantine/form'
+import { useForm, schemaResolver } from '@mantine/form'
 import { DatePickerInput } from '@mantine/dates'
 import { showNotification } from '@mantine/notifications'
 
@@ -29,7 +29,7 @@ const RmReportUI = () => {
       startDate: new Date(new Date().getFullYear(), 0, 1),
       endDate: new Date()
     },
-    validate: yupResolver(rmReportSchema)
+    validate: schemaResolver(rmReportSchema)
   })
 
   const submitHandler = (val: RmReportProps) =>

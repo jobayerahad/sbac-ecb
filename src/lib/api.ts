@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { getServerSession } from 'next-auth'
-import { authOptions } from './authOptions'
+import { auth } from '@auth'
 
 // Create a common axios instance with base configurations
 const api = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   const headers: Record<string, string> = {}
 

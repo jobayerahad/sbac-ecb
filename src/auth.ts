@@ -1,21 +1,15 @@
-import { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
+import api from '@/lib/api'
 
-import api from '@utils/api'
-
-type User = {
-  id: string
-}
-
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
-      name: 'Credentials',
       credentials: {
-        clientId: { label: 'Client ID' },
-        secretKey: { label: 'Secret Key' }
+        clientId: { label: 'Client ID', type: 'email' },
+        secretKey: { label: 'Secret Key', type: 'password' }
       },
-      authorize: async (credentials) => {
+      async authorize(credentials) {
         const token = process.env.INTERBRIDGE_ACCESS_TOKEN
 
         try {
@@ -37,26 +31,23 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    jwt: async ({ token, user }) => {
-      if (user) token.user = user as User
+    async jwt({ token, user }) {
+      // On first sign-in, user object is available
+      if (user) {
+        token.id = user.id
+      }
       return token
     },
 
-    session: async ({ session, token }) => {
-      if (token) session.user = token.user as User
+    async session({ session, token }) {
+      session.user.id = token.id as string
       return session
     }
   },
 
-  session: {
-    maxAge: 60 * 60 // 1 hour
-  },
-
-  jwt: {
-    maxAge: 60 * 60 // 1 hour
-  },
-
   pages: {
     signIn: '/sign-in'
-  }
-}
+  },
+
+  session: { strategy: 'jwt', maxAge: 10 * 60 }
+})

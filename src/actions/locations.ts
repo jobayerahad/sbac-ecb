@@ -1,6 +1,6 @@
 'use server'
 
-import api from '@utils/api'
+import api from '@lib/api'
 import { convertLocationData } from '@utils/formatter.utils'
 import { TLocation } from '@types'
 
